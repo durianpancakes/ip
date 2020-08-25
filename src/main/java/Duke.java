@@ -16,7 +16,7 @@ public class Duke {
             line = in.nextLine();
             String[] stringArray = line.trim().split(" ");
 
-            switch(stringArray[0]){
+            switch(stringArray[0].toLowerCase()){
             case "bye":
                 exitFlag = true;
                 break;
@@ -25,10 +25,17 @@ public class Duke {
                 break;
             case "done":
                 try{
-                    int itemNum = Integer.parseInt(stringArray[1]);
-                    taskHelper.setTaskStatus(itemNum, true);
+                    if(stringArray.length != 1){
+                        int itemNum = Integer.parseInt(stringArray[1]);
+                        taskHelper.setTaskStatus(itemNum, true);
+                    } else {
+                        printHorizontalLine();
+                        System.out.println("Please enter an item number!");
+                        printEmptyLine();
+                        printHorizontalLine();
+                    }
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                    taskHelper.addTask(new Task(line));
                 }
                 break;
             default:
@@ -71,7 +78,6 @@ public class Duke {
         printHorizontalLine();
         System.out.println("Bye. Hope to see you again soon!");
         printEmptyLine();
-
         printHorizontalLine();
     }
 

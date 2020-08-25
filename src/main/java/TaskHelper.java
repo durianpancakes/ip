@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class TaskHelper {
     private static TaskHelper INSTANCE = null;
-    private final ArrayList<Task> TASK_LIST = new ArrayList<>();
+    private final ArrayList<Task> taskList = new ArrayList<>();
 
     public static TaskHelper getInstance(){
         if(INSTANCE == null){
@@ -20,9 +20,9 @@ public class TaskHelper {
     }
 
     public void printAllTasks(){
-        for(int i = 0; i < TASK_LIST.size(); i++){
+        for(int i = 0; i < taskList.size(); i++){
             int itemIdx = i + 1;
-            Task task = TASK_LIST.get(i);
+            Task task = taskList.get(i);
             System.out.println(itemIdx + "."
                     + "[" + task.getStatusIcon() + "]"
                     +  " " + task.getTaskTitle());
@@ -30,7 +30,7 @@ public class TaskHelper {
     }
 
     public void addTask(Task task){
-        TASK_LIST.add(task);
+        taskList.add(task);
         echo(task.getTaskTitle());
     }
 
@@ -42,9 +42,9 @@ public class TaskHelper {
     }
 
     public void setTaskStatus(int itemNum, boolean isDone){
-        if(itemNum > 0 && itemNum <= TASK_LIST.size()){
+        if(itemNum > 0 && itemNum <= taskList.size()){
             int itemIdx = itemNum - 1;
-            Task task = TASK_LIST.get(itemIdx);
+            Task task = taskList.get(itemIdx);
 
             task.setDone(isDone);
 
@@ -61,7 +61,10 @@ public class TaskHelper {
             printEmptyLine();
             printHorizontalLine();
         } else {
+            printHorizontalLine();
             System.out.println("Invalid task number given!");
+            printEmptyLine();
+            printHorizontalLine();
         }
     }
 }
