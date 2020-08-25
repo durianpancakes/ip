@@ -1,6 +1,9 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
+    private static ArrayList<String> tasks = new ArrayList<>();
+
     public static void main(String[] args) {
         boolean exitFlag = false;
 
@@ -15,8 +18,11 @@ public class Duke {
             case "bye":
                 exitFlag = true;
                 break;
+            case "list":
+                listTasks();
+                break;
             default:
-                echo(line);
+                addTask(line);
             }
         }
 
@@ -33,6 +39,24 @@ public class Duke {
         printHorizontalLine();
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
+        printEmptyLine();
+        printHorizontalLine();
+    }
+
+    private static void addTask(String task){
+        printHorizontalLine();
+        tasks.add(task);
+        System.out.println("added: " + task);
+        printEmptyLine();
+        printHorizontalLine();
+    }
+
+    private static void listTasks(){
+        printHorizontalLine();
+        for(int i = 0; i < tasks.size(); i++){
+            int taskIdx = i + 1;
+            System.out.println(taskIdx + ". " + tasks.get(i));
+        }
         printEmptyLine();
         printHorizontalLine();
     }
