@@ -1,78 +1,43 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
-    private static ArrayList<String> tasks = new ArrayList<>();
+    private static boolean exitFlag;
 
     public static void main(String[] args) {
-        boolean exitFlag = false;
-
         printIntroMsg();
+
+        // Initialize TaskHelper
+        TaskHelper taskHelper = TaskHelper.getInstance();
 
         String line;
         Scanner in = new Scanner(System.in);
 
         while(!exitFlag){
             line = in.nextLine();
-            switch(line){
+            String[] stringArray = line.trim().split(" ");
+
+            switch(stringArray[0]){
             case "bye":
                 exitFlag = true;
                 break;
             case "list":
                 listTasks();
                 break;
+            case "done":
+                try{
+                    int itemNum = Integer.parseInt(stringArray[1]);
+                    taskHelper.setTaskStatus(itemNum, true);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                break;
             default:
-                addTask(line);
+                taskHelper.addTask(new Task(line));
+                break;
             }
         }
 
         printByeMsg();
-    }
-
-    private static void printIntroMsg(){
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);
-        printHorizontalLine();
-        System.out.println("Hello! I'm Duke");
-        System.out.println("What can I do for you?");
-        printEmptyLine();
-        printHorizontalLine();
-    }
-
-    private static void addTask(String task){
-        printHorizontalLine();
-        tasks.add(task);
-        System.out.println("added: " + task);
-        printEmptyLine();
-        printHorizontalLine();
-    }
-
-    private static void listTasks(){
-        printHorizontalLine();
-        for(int i = 0; i < tasks.size(); i++){
-            int taskIdx = i + 1;
-            System.out.println(taskIdx + ". " + tasks.get(i));
-        }
-        printEmptyLine();
-        printHorizontalLine();
-    }
-
-    private static void echo(String message){
-        printHorizontalLine();
-        System.out.println(message);
-        printEmptyLine();
-        printHorizontalLine();
-    }
-
-    private static void printByeMsg(){
-        printHorizontalLine();
-        System.out.println("Bye. Hope to see you again soon!");
-        printEmptyLine();
-        printHorizontalLine();
     }
 
     private static void printHorizontalLine(){
@@ -81,5 +46,40 @@ public class Duke {
 
     private static void printEmptyLine(){
         System.out.println();
+    }
+
+    private static void printIntroMsg(){
+        String logo = " ____        _        \n"
+                + "|  _ \\ _   _| | _____ \n"
+                + "| | | | | | | |/ / _ \\\n"
+                + "| |_| | |_| |   <  __/\n"
+                + "|____/ \\__,_|_|\\_\\___|\n";
+
+        System.out.println("Hello from\n" + logo);
+
+        printHorizontalLine();
+        System.out.println("Hello! I'm Duke");
+        System.out.println("What can I do for you?");
+        System.out.println("The following commands are available:");
+        System.out.println("1. list");
+        System.out.println("2. done <item number>");
+        System.out.println("Inputs without commands will be recognized as new events");
+        printEmptyLine();
+    }
+
+    private static void printByeMsg(){
+        printHorizontalLine();
+        System.out.println("Bye. Hope to see you again soon!");
+        printEmptyLine();
+
+        printHorizontalLine();
+    }
+
+    private static void listTasks(){
+        printHorizontalLine();
+        TaskHelper taskHelper = TaskHelper.getInstance();
+        taskHelper.printAllTasks();
+        printEmptyLine();
+        printHorizontalLine();
     }
 }
