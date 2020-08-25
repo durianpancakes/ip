@@ -1,6 +1,24 @@
+import java.util.Scanner;
+
 public class Duke {
     public static void main(String[] args) {
+        boolean exitFlag = false;
+
         printIntroMsg();
+
+        String line;
+        Scanner in = new Scanner(System.in);
+
+        while(!exitFlag){
+            line = in.nextLine();
+            switch(line){
+            case "bye":
+                exitFlag = true;
+                break;
+            default:
+                echo(line);
+            }
+        }
 
         printByeMsg();
     }
@@ -15,6 +33,13 @@ public class Duke {
         printHorizontalLine();
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
+        printEmptyLine();
+        printHorizontalLine();
+    }
+
+    private static void echo(String message){
+        printHorizontalLine();
+        System.out.println(message);
         printEmptyLine();
         printHorizontalLine();
     }
