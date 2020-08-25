@@ -23,7 +23,9 @@ public class TaskHelper {
         for(int i = 0; i < TASK_LIST.size(); i++){
             int itemIdx = i + 1;
             Task task = TASK_LIST.get(i);
-            System.out.println(itemIdx + "." + "[" + task.getStatusIcon() + "]" +  " " + task.getTaskTitle());
+            System.out.println(itemIdx + "."
+                    + "[" + task.getStatusIcon() + "]"
+                    +  " " + task.getTaskTitle());
         }
     }
 
@@ -49,10 +51,12 @@ public class TaskHelper {
             printHorizontalLine();
             if(task.isDone){
                 System.out.println("Nice! I've marked this task as done:");
-                System.out.println("[" + task.getStatusIcon() + "] " + task.getTaskTitle());
+                System.out.println("[" + task.getStatusIcon() + "] "
+                        + task.getTaskTitle());
             } else {
                 System.out.println("I've marked this task as not done:");
-                System.out.println("[" + task.getStatusIcon() + "] " + task.getTaskTitle());
+                System.out.println("[" + task.getStatusIcon() + "] "
+                        + task.getTaskTitle());
             }
             printEmptyLine();
             printHorizontalLine();
