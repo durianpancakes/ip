@@ -1,0 +1,12 @@
+list
+todo eat dinner
+event John's birthday party /at 270320 3.00pm - 5.00pm
+deadline CG2027 assignment /by this saturday 2359
+list
+done 3
+list
+done 2
+list
+done 1
+list
+bye

@@ -20,23 +20,76 @@ public class TaskHelper {
     }
 
     public void printAllTasks(){
-        for(int i = 0; i < taskList.size(); i++){
-            int itemIdx = i + 1;
-            Task task = taskList.get(i);
-            System.out.println(itemIdx + "."
-                    + "[" + task.getStatusIcon() + "]"
-                    +  " " + task.getTaskTitle());
+        if(taskList.size() == 0) {
+            System.out.println("You have not added any tasks yet!");
+        } else {
+            System.out.println("Here are the tasks in your list:");
+            for (int i = 0; i < taskList.size(); i++) {
+                int itemIdx = i + 1;
+                Task task = taskList.get(i);
+                System.out.println(itemIdx + ". " + task);
+            }
         }
     }
 
-    public void addTask(Task task){
-        taskList.add(task);
-        echo(task.getTaskTitle());
+    public void addTodo(String commandArgs){
+        Todo todo = new Todo(commandArgs);
+        taskList.add(todo);
+        printAddTodoMsg(todo);
     }
 
-    private static void echo(String command){
+    public void addDeadline(String commandArgs){
+        final String matchByPrefix = "/by";
+        final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
+        String description = commandArgs.substring(0, indexOfByPrefix).trim();
+        String by = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
+        Deadline deadline = new Deadline(description, by);
+        taskList.add(deadline);
+        printAddDeadlineMsg(deadline);
+    }
+
+    public void addEvent(String commandArgs){
+        final String matchByPrefix = "/at";
+        final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
+        String description = commandArgs.substring(0, indexOfByPrefix).trim();
+        String at = commandArgs.substring(indexOfByPrefix).replace("/at", "").trim();
+        Event event = new Event(description, at);
+        taskList.add(event);
+        printAddEventMsg(event);
+    }
+
+    private void printAddTodoMsg(Todo todo){
         printHorizontalLine();
-        System.out.println("added: " + command);
+        System.out.println("added: " + todo);
+        if(taskList.size() == 1){
+            System.out.println("You have " + taskList.size() + " task in the list");
+        } else {
+            System.out.println("You have " + taskList.size() + " tasks in the list");
+        }
+        printEmptyLine();
+        printHorizontalLine();
+    }
+
+    private void printAddDeadlineMsg(Deadline deadline){
+        printHorizontalLine();
+        System.out.println("added: " + deadline);
+        if(taskList.size() == 1){
+            System.out.println("You have " + taskList.size() + " task in the list");
+        } else {
+            System.out.println("You have " + taskList.size() + " tasks in the list");
+        }
+        printEmptyLine();
+        printHorizontalLine();
+    }
+
+    private void printAddEventMsg(Event event){
+        printHorizontalLine();
+        System.out.println("added: " + event);
+        if(taskList.size() == 1){
+            System.out.println("You have " + taskList.size() + " task in the list");
+        } else {
+            System.out.println("You have " + taskList.size() + " tasks in the list");
+        }
         printEmptyLine();
         printHorizontalLine();
     }
@@ -51,12 +104,10 @@ public class TaskHelper {
             printHorizontalLine();
             if(task.isDone){
                 System.out.println("Nice! I've marked this task as done:");
-                System.out.println("[" + task.getStatusIcon() + "] "
-                        + task.getTaskTitle());
+                System.out.println(task);
             } else {
                 System.out.println("I've marked this task as not done:");
-                System.out.println("[" + task.getStatusIcon() + "] "
-                        + task.getTaskTitle());
+                System.out.println(task);
             }
             printEmptyLine();
             printHorizontalLine();

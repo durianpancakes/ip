@@ -5,3 +5,91 @@ Hello from
 | |_| | |_| |   <  __/
 |____/ \__,_|_|\_\___|
 
+-----------------------------------------------
+Hello! I'm Duke
+What can I do for you?
+The following commands are available:
+1. list
+2. todo <description>
+3. event <description> /at <date time>
+4. deadline <description> /by <date time>
+5. done <item number>
+
+list
+-----------------------------------------------
+You have not added any tasks yet!
+
+-----------------------------------------------
+todo eat dinner
+-----------------------------------------------
+added: [T][✘]eat dinner
+You have 1 task in the list
+
+-----------------------------------------------
+event John's birthday party /at 270320 3pm-8pm
+-----------------------------------------------
+added: [E][✘]John's birthday party (at: 270320 3pm-8pm)
+You have 2 tasks in the list
+
+-----------------------------------------------
+deadline CG2027 assignment /by this saturday 2359
+-----------------------------------------------
+added: [D][✘]CG2027 assignment (by: this saturday 2359)
+You have 3 tasks in the list
+
+-----------------------------------------------
+list
+-----------------------------------------------
+Here are the tasks in your list:
+1. [T][✘]eat dinner
+2. [E][✘]John's birthday party (at: 270320 3pm-8pm)
+3. [D][✘]CG2027 assignment (by: this saturday 2359)
+
+-----------------------------------------------
+done 3
+-----------------------------------------------
+Nice! I've marked this task as done:
+[D][✓]CG2027 assignment (by: this saturday 2359)
+
+-----------------------------------------------
+list
+-----------------------------------------------
+Here are the tasks in your list:
+1. [T][✘]eat dinner
+2. [E][✘]John's birthday party (at: 270320 3pm-8pm)
+3. [D][✓]CG2027 assignment (by: this saturday 2359)
+
+-----------------------------------------------
+done 2
+-----------------------------------------------
+Nice! I've marked this task as done:
+[E][✓]John's birthday party (at: 270320 3pm-8pm)
+
+-----------------------------------------------
+list
+-----------------------------------------------
+Here are the tasks in your list:
+1. [T][✘]eat dinner
+2. [E][✓]John's birthday party (at: 270320 3pm-8pm)
+3. [D][✓]CG2027 assignment (by: this saturday 2359)
+
+-----------------------------------------------
+done 1
+-----------------------------------------------
+Nice! I've marked this task as done:
+[T][✓]eat dinner
+
+-----------------------------------------------
+list
+-----------------------------------------------
+Here are the tasks in your list:
+1. [T][✓]eat dinner
+2. [E][✓]John's birthday party (at: 270320 3pm-8pm)
+3. [D][✓]CG2027 assignment (by: this saturday 2359)
+
+-----------------------------------------------
+bye
+-----------------------------------------------
+Bye. Hope to see you again soon!
+
+-----------------------------------------------

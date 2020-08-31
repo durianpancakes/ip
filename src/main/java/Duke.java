@@ -9,14 +9,17 @@ public class Duke {
         // Initialize TaskHelper
         TaskHelper taskHelper = TaskHelper.getInstance();
 
-        String line;
+        String userCommand;
         Scanner in = new Scanner(System.in);
 
         while(!exitFlag){
-            line = in.nextLine();
-            String[] stringArray = line.trim().split(" ");
+            userCommand = in.nextLine();
+            final String[] split = userCommand.trim().split("\\s+", 2);
+            final String[] commandTypeAndParams = split.length == 2 ? split : new String[]{split[0], ""};
+            final String commandType = commandTypeAndParams[0];
+            final String commandArgs = commandTypeAndParams[1];
 
-            switch(stringArray[0].toLowerCase()){
+            switch(commandType){
             case "bye":
                 exitFlag = true;
                 break;
@@ -24,22 +27,23 @@ public class Duke {
                 listTasks();
                 break;
             case "done":
-                try{
-                    if(stringArray.length != 1){
-                        int itemNum = Integer.parseInt(stringArray[1]);
+                if(!commandArgs.isEmpty()){
+                    try{
+                        int itemNum = Integer.parseInt(commandArgs);
                         taskHelper.setTaskStatus(itemNum, true);
-                    } else {
-                        printHorizontalLine();
-                        System.out.println("Please enter an item number!");
-                        printEmptyLine();
-                        printHorizontalLine();
+                    } catch (NumberFormatException e){
+                        System.out.println("Please enter a valid item number!");
                     }
-                } catch (NumberFormatException e) {
-                    taskHelper.addTask(new Task(line));
                 }
                 break;
-            default:
-                taskHelper.addTask(new Task(line));
+            case "todo":
+                taskHelper.addTodo(commandArgs);
+                break;
+            case "event":
+                taskHelper.addEvent(commandArgs);
+                break;
+            case "deadline":
+                taskHelper.addDeadline(commandArgs);
                 break;
             }
         }
@@ -69,8 +73,10 @@ public class Duke {
         System.out.println("What can I do for you?");
         System.out.println("The following commands are available:");
         System.out.println("1. list");
-        System.out.println("2. done <item number>");
-        System.out.println("Inputs without commands will be recognized as new events");
+        System.out.println("2. todo <description>");
+        System.out.println("3. event <description> /at <date time>");
+        System.out.println("4. deadline <description> /by <date time>");
+        System.out.println("5. done <item number>");
         printEmptyLine();
     }
 
@@ -78,6 +84,7 @@ public class Duke {
         printHorizontalLine();
         System.out.println("Bye. Hope to see you again soon!");
         printEmptyLine();
+
         printHorizontalLine();
     }
 
