@@ -19,7 +19,7 @@ public class Duke {
             final String commandType = commandTypeAndParams[0];
             final String commandArgs = commandTypeAndParams[1];
 
-            switch(commandType){
+            switch(commandType) {
             case "bye":
                 exitFlag = true;
                 break;
@@ -28,7 +28,7 @@ public class Duke {
                 break;
             case "done":
                 if(!commandArgs.isEmpty()){
-                    try{
+                    try {
                         int itemNum = Integer.parseInt(commandArgs);
                         taskHelper.setTaskStatus(itemNum, true);
                     } catch (NumberFormatException e){
@@ -59,7 +59,7 @@ public class Duke {
         System.out.println();
     }
 
-    private static void printIntroMsg(){
+    private static void printIntroMsg() {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -80,15 +80,14 @@ public class Duke {
         printEmptyLine();
     }
 
-    private static void printByeMsg(){
+    private static void printByeMsg() {
         printHorizontalLine();
         System.out.println("Bye. Hope to see you again soon!");
         printEmptyLine();
-
         printHorizontalLine();
     }
 
-    private static void listTasks(){
+    private static void listTasks() {
         printHorizontalLine();
         TaskHelper taskHelper = TaskHelper.getInstance();
         taskHelper.printAllTasks();

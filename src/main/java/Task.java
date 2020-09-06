@@ -2,7 +2,7 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
-    public Task (String description){
+    public Task (String description) {
         this.description = description;
         this.isDone = false;
     }
@@ -15,7 +15,7 @@ public class Task {
         this.description = description;
     }
 
-    public boolean getDone(){
+    public boolean getDone() {
         return isDone;
     }
 

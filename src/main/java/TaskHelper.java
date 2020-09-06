@@ -5,7 +5,7 @@ public class TaskHelper {
     private final ArrayList<Task> taskList = new ArrayList<>();
 
     public static TaskHelper getInstance(){
-        if(INSTANCE == null){
+        if (INSTANCE == null) {
             INSTANCE = new TaskHelper();
         }
         return INSTANCE;
@@ -19,8 +19,8 @@ public class TaskHelper {
         System.out.println();
     }
 
-    public void printAllTasks(){
-        if(taskList.size() == 0) {
+    public void printAllTasks() {
+        if (taskList.size() == 0) {
             System.out.println("You have not added any tasks yet!");
         } else {
             System.out.println("Here are the tasks in your list:");
@@ -32,35 +32,35 @@ public class TaskHelper {
         }
     }
 
-    public void addTodo(String commandArgs){
+    public void addTodo(String commandArgs) {
         Todo todo = new Todo(commandArgs);
         taskList.add(todo);
-        printAddTodoMsg(todo);
+        printAddMsg(todo);
     }
 
-    public void addDeadline(String commandArgs){
+    public void addDeadline(String commandArgs) {
         final String matchByPrefix = "/by";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String by = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
         Deadline deadline = new Deadline(description, by);
         taskList.add(deadline);
-        printAddDeadlineMsg(deadline);
+        printAddMsg(deadline);
     }
 
-    public void addEvent(String commandArgs){
+    public void addEvent(String commandArgs) {
         final String matchByPrefix = "/at";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String at = commandArgs.substring(indexOfByPrefix).replace("/at", "").trim();
         Event event = new Event(description, at);
         taskList.add(event);
-        printAddEventMsg(event);
+        printAddMsg(event);
     }
 
-    private void printAddTodoMsg(Todo todo){
+    private void printAddMsg(Task task) {
         printHorizontalLine();
-        System.out.println("added: " + todo);
+        System.out.println("added: " + task);
         if(taskList.size() == 1){
             System.out.println("You have " + taskList.size() + " task in the list");
         } else {
@@ -70,39 +70,15 @@ public class TaskHelper {
         printHorizontalLine();
     }
 
-    private void printAddDeadlineMsg(Deadline deadline){
-        printHorizontalLine();
-        System.out.println("added: " + deadline);
-        if(taskList.size() == 1){
-            System.out.println("You have " + taskList.size() + " task in the list");
-        } else {
-            System.out.println("You have " + taskList.size() + " tasks in the list");
-        }
-        printEmptyLine();
-        printHorizontalLine();
-    }
-
-    private void printAddEventMsg(Event event){
-        printHorizontalLine();
-        System.out.println("added: " + event);
-        if(taskList.size() == 1){
-            System.out.println("You have " + taskList.size() + " task in the list");
-        } else {
-            System.out.println("You have " + taskList.size() + " tasks in the list");
-        }
-        printEmptyLine();
-        printHorizontalLine();
-    }
-
-    public void setTaskStatus(int itemNum, boolean isDone){
-        if(itemNum > 0 && itemNum <= taskList.size()){
+    public void setTaskStatus(int itemNum, boolean isDone) {
+        if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
             Task task = taskList.get(itemIdx);
 
             task.setDone(isDone);
 
             printHorizontalLine();
-            if(task.isDone){
+            if (task.isDone) {
                 System.out.println("Nice! I've marked this task as done:");
                 System.out.println(task);
             } else {
