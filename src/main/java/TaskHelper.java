@@ -32,30 +32,55 @@ public class TaskHelper {
         }
     }
 
-    public void addTodo(String commandArgs) {
-        Todo todo = new Todo(commandArgs);
-        taskList.add(todo);
-        printAddMsg(todo);
+    public void addTodo(String commandArgs) throws DukeInputException {
+        if(commandArgs.equals("")){
+            throw new DukeInputException("Todo description cannot be empty!");
+        } else {
+            Todo todo = new Todo(commandArgs);
+            taskList.add(todo);
+            printAddMsg(todo);
+        }
     }
 
-    public void addDeadline(String commandArgs) {
-        final String matchByPrefix = "/by";
-        final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
-        String description = commandArgs.substring(0, indexOfByPrefix).trim();
-        String by = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
-        Deadline deadline = new Deadline(description, by);
-        taskList.add(deadline);
-        printAddMsg(deadline);
+    public void addDeadline(String commandArgs) throws DukeInputException {
+        if(commandArgs.equals("")){
+            throw new DukeInputException("Deadline description cannot be empty!");
+        } else {
+            try {
+                final String matchByPrefix = "/by";
+                final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
+                String description = commandArgs.substring(0, indexOfByPrefix).trim();
+                String by = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
+                Deadline deadline = new Deadline(description, by);
+                taskList.add(deadline);
+                printAddMsg(deadline);
+            } catch (StringIndexOutOfBoundsException e) {
+                throw new DukeInputException("Did you forget /by?");
+            }
+        }
     }
 
-    public void addEvent(String commandArgs) {
-        final String matchByPrefix = "/at";
-        final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
-        String description = commandArgs.substring(0, indexOfByPrefix).trim();
-        String at = commandArgs.substring(indexOfByPrefix).replace("/at", "").trim();
-        Event event = new Event(description, at);
-        taskList.add(event);
-        printAddMsg(event);
+    public void addEvent(String commandArgs) throws DukeInputException {
+        if(commandArgs.equals("")){
+            throw new DukeInputException("Event description cannot be empty!");
+        } else {
+            try {
+                final String matchByPrefix = "/at";
+                final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
+                String description = commandArgs.substring(0, indexOfByPrefix).trim();
+                String at = commandArgs.substring(indexOfByPrefix).replace("/at", "").trim();
+                if(at.equals("")) {
+                    throw new DukeInputException("Event at cannot be empty!");
+                } else {
+                    Event event = new Event(description, at);
+                    taskList.add(event);
+                    printAddMsg(event);
+                }
+            } catch (StringIndexOutOfBoundsException e) {
+                throw new DukeInputException("Did you forget /at?");
+            }
+        }
+
     }
 
     private void printAddMsg(Task task) {
