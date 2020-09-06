@@ -66,6 +66,13 @@ public class Duke {
                     printHorizontalLine();
                 }
                 break;
+            default:
+                printHorizontalLine();
+                System.out.println("I didn't understand that command.");
+                printHelpMsg();
+                printEmptyLine();
+                printHorizontalLine();
+                break;
             }
         }
 
