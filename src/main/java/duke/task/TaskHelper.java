@@ -1,3 +1,7 @@
+package duke.task;
+
+import duke.DukeInputException;
+
 import java.util.ArrayList;
 
 public class TaskHelper {
