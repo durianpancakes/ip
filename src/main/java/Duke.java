@@ -32,18 +32,37 @@ public class Duke {
                         int itemNum = Integer.parseInt(commandArgs);
                         taskHelper.setTaskStatus(itemNum, true);
                     } catch (NumberFormatException e){
-                        System.out.println("Please enter a valid item number!");
+                        printMsg("Please enter a valid item number!");
                     }
                 }
                 break;
             case "todo":
-                taskHelper.addTodo(commandArgs);
+                try {
+                    taskHelper.addTodo(commandArgs);
+                } catch (DukeInputException e) {
+                    printMsg(e.error);
+                }
                 break;
             case "event":
-                taskHelper.addEvent(commandArgs);
+                try {
+                    taskHelper.addEvent(commandArgs);
+                } catch (DukeInputException e) {
+                    printMsg(e.error);
+                }
                 break;
             case "deadline":
-                taskHelper.addDeadline(commandArgs);
+                try {
+                    taskHelper.addDeadline(commandArgs);
+                } catch (DukeInputException e) {
+                    printMsg(e.error);
+                }
+                break;
+            default:
+                printHorizontalLine();
+                System.out.println("I didn't understand that command.");
+                printHelpMsg();
+                printEmptyLine();
+                printHorizontalLine();
                 break;
             }
         }
@@ -71,18 +90,29 @@ public class Duke {
         printHorizontalLine();
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
+        printHelpMsg();
+        printEmptyLine();
+    }
+
+    private static void printHelpMsg() {
         System.out.println("The following commands are available:");
         System.out.println("1. list");
         System.out.println("2. todo <description>");
         System.out.println("3. event <description> /at <date time>");
         System.out.println("4. deadline <description> /by <date time>");
         System.out.println("5. done <item number>");
-        printEmptyLine();
     }
 
     private static void printByeMsg() {
         printHorizontalLine();
         System.out.println("Bye. Hope to see you again soon!");
+        printEmptyLine();
+        printHorizontalLine();
+    }
+
+    private static void printMsg(String message) {
+        printHorizontalLine();
+        System.out.println(message);
         printEmptyLine();
         printHorizontalLine();
     }
