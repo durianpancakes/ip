@@ -32,7 +32,7 @@ public class Duke {
                         int itemNum = Integer.parseInt(commandArgs);
                         taskHelper.setTaskStatus(itemNum, true);
                     } catch (NumberFormatException e){
-                        System.out.println("Please enter a valid item number!");
+                        printMsg("Please enter a valid item number!");
                     }
                 }
                 break;
@@ -40,30 +40,21 @@ public class Duke {
                 try {
                     taskHelper.addTodo(commandArgs);
                 } catch (DukeInputException e) {
-                    printHorizontalLine();
-                    System.out.println(e.error);
-                    printEmptyLine();
-                    printHorizontalLine();
+                    printMsg(e.error);
                 }
                 break;
             case "event":
                 try {
                     taskHelper.addEvent(commandArgs);
                 } catch (DukeInputException e) {
-                    printHorizontalLine();
-                    System.out.println(e.error);
-                    printEmptyLine();
-                    printHorizontalLine();
+                    printMsg(e.error);
                 }
                 break;
             case "deadline":
                 try {
                     taskHelper.addDeadline(commandArgs);
                 } catch (DukeInputException e) {
-                    printHorizontalLine();
-                    System.out.println(e.error);
-                    printEmptyLine();
-                    printHorizontalLine();
+                    printMsg(e.error);
                 }
                 break;
             default:
@@ -115,6 +106,13 @@ public class Duke {
     private static void printByeMsg() {
         printHorizontalLine();
         System.out.println("Bye. Hope to see you again soon!");
+        printEmptyLine();
+        printHorizontalLine();
+    }
+
+    private static void printMsg(String message) {
+        printHorizontalLine();
+        System.out.println(message);
         printEmptyLine();
         printHorizontalLine();
     }
