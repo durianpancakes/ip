@@ -15,6 +15,13 @@ public class Duke {
         // Initialize TaskHelper
         TaskHelper taskHelper = TaskHelper.getInstance();
 
+        try {
+            TaskHelper.initializeTasks();
+            taskHelper.printAllTasks();
+        } catch (IOException | DukeIOException e) {
+            System.out.println("There was an error initializing Duke");
+        }
+
         String userCommand;
         Scanner in = new Scanner(System.in);
 
@@ -28,6 +35,11 @@ public class Duke {
             switch(commandType) {
             case "bye":
                 exitFlag = true;
+                try {
+                    TaskHelper.saveTasks();
+                } catch (IOException | DukeIOException e) {
+                    System.out.println("Unfortunately, there was a problem saving your tasks.");
+                }
                 break;
             case "list":
                 listTasks();
