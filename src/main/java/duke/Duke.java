@@ -1,7 +1,9 @@
 package duke;
 
+import duke.task.DukeIOException;
 import duke.task.TaskHelper;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Duke {
@@ -61,6 +63,16 @@ public class Duke {
                     printMsg(e.error);
                 }
                 break;
+            case "delete":
+                if(!commandArgs.isEmpty()){
+                    try {
+                        int itemNum = Integer.parseInt(commandArgs);
+                        taskHelper.deleteTask(itemNum);
+                    } catch (NumberFormatException e){
+                        printMsg("Please enter a valid item number!");
+                    }
+                }
+                break;
             default:
                 printHorizontalLine();
                 System.out.println("I didn't understand that command.");
@@ -105,6 +117,7 @@ public class Duke {
         System.out.println("3. event <description> /at <date time>");
         System.out.println("4. deadline <description> /by <date time>");
         System.out.println("5. done <item number>");
+        System.out.println("6. delete <item number>");
     }
 
     private static void printByeMsg() {
@@ -127,5 +140,5 @@ public class Duke {
         taskHelper.printAllTasks();
         printEmptyLine();
         printHorizontalLine();
-    }   
+    }
 }
