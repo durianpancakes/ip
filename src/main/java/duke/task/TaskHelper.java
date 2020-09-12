@@ -1,12 +1,21 @@
 package duke.task;
 
+import duke.Duke;
 import duke.DukeInputException;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Scanner;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class TaskHelper {
     private static TaskHelper INSTANCE = null;
-    private final ArrayList<Task> taskList = new ArrayList<>();
+    private static final ArrayList<Task> taskList = new ArrayList<>();
 
     public static TaskHelper getInstance(){
         if (INSTANCE == null) {
@@ -15,11 +24,90 @@ public class TaskHelper {
         return INSTANCE;
     }
 
-    private static void printHorizontalLine(){
+    public static void initializeTasks() throws DukeIOException, IOException {
+        String dataPath = new File("data").getAbsolutePath();
+
+        if(Files.exists(Path.of(dataPath))){
+            // Data directory exists
+            File file = new File(dataPath + "/tasks.txt");
+            Scanner sc = new Scanner(file);
+
+            while(sc.hasNext()) {
+                String dataString = sc.nextLine();
+                final String[] data = dataString.trim().split("\\|", 3);
+                boolean isDone;
+                String description;
+
+                switch(data[0]) {
+                case "[T]":
+                    isDone = Boolean.parseBoolean(data[1]);
+                    description = data[2];
+                    taskList.add(new Todo(description, isDone));
+                    break;
+                case "[D]":
+                    isDone = Boolean.parseBoolean(data[1]);
+                    String[] deadlineInfo = data[2].trim().split("\\|", 2);
+                    description = deadlineInfo[0];
+                    String by = deadlineInfo[1];
+                    taskList.add(new Deadline(description, by, isDone));
+                    break;
+                case "[E]":
+                    isDone = Boolean.parseBoolean(data[1]);
+                    String[] eventInfo = data[2].trim().split("\\|", 2);
+                    description = eventInfo[0];
+                    String at = eventInfo[1];
+                    taskList.add(new Event(description, at, isDone));
+                    break;
+                }
+            }
+        } else {
+            // Data directory does not exist. Initialize data directory.
+            File file = new File(dataPath);
+            boolean dirCreated = file.mkdir();
+            if(dirCreated) {
+                file = new File(dataPath + "/tasks.txt");
+                file.createNewFile();
+            } else {
+                throw new DukeIOException();
+            }
+        }
+    }
+
+    public static void saveTasks() throws DukeIOException, IOException {
+        String dataPath = new File("data/tasks.txt").getAbsolutePath();
+        StringBuilder dataString = new StringBuilder();
+
+        for (Task task : taskList) {
+            if (task instanceof Todo) {
+                Todo todo = (Todo) task;
+                String todoString = todo.getTypeIcon() + "|" + todo.isDone + "|"
+                        + todo.description + System.lineSeparator();
+                dataString.append(todoString);
+            } else if (task instanceof Deadline) {
+                Deadline deadline = (Deadline) task;
+                String deadlineString = deadline.getTypeIcon() + "|" + deadline.isDone + "|"
+                        + deadline.description + "|" + deadline.by + System.lineSeparator();
+                dataString.append(deadlineString);
+            } else if (task instanceof Event) {
+                Event event = (Event) task;
+                String eventString = event.getTypeIcon() + "|" + event.isDone + "|"
+                        + event.description + "|" + event.at + System.lineSeparator();
+                dataString.append(eventString);
+            } else {
+                throw new DukeIOException();
+            }
+        }
+
+        FileWriter fw = new FileWriter(dataPath);
+        fw.write(String.valueOf(dataString));
+        fw.close();
+    }
+
+    private static void printHorizontalLine() {
         System.out.println("-----------------------------------------------");
     }
 
-    private static void printEmptyLine(){
+    private static void printEmptyLine() {
         System.out.println();
     }
 
@@ -113,6 +201,32 @@ public class TaskHelper {
             } else {
                 System.out.println("I've marked this task as not done:");
                 System.out.println(task);
+            }
+            printEmptyLine();
+            printHorizontalLine();
+        } else {
+            printHorizontalLine();
+            System.out.println("Invalid task number given!");
+            printEmptyLine();
+            printHorizontalLine();
+        }
+    }
+
+    public void deleteTask(int itemNum) {
+        if (itemNum > 0 && itemNum <= taskList.size()) {
+            int itemIdx = itemNum - 1;
+            Task task = taskList.get(itemIdx);
+            taskList.remove(itemIdx);
+
+            printHorizontalLine();
+            System.out.println("Noted. I've removed this task:");
+            System.out.println(task);
+            if(taskList.size() == 1){
+                System.out.println("You have " + taskList.size() + " task in the list");
+            } else if(taskList.size() == 0) {
+                System.out.println("You have no task in the list currently");
+            } else {
+                System.out.println("You have " + taskList.size() + " tasks in the list");
             }
             printEmptyLine();
             printHorizontalLine();

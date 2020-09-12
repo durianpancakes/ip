@@ -8,6 +8,12 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    public Deadline(String description, String by, boolean isDone) {
+        super(description);
+        this.by = by;
+        this.isDone = isDone;
+    }
+
     @Override
     public String getTypeIcon(){
         return "[D]";

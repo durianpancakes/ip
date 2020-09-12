@@ -5,6 +5,11 @@ public class Todo extends Task {
         super(taskTitle);
     }
 
+    public Todo(String taskTitle, boolean isDone) {
+        super(taskTitle);
+        this.isDone = isDone;
+    }
+
     @Override
     public String getTypeIcon(){
         return "[T]";
