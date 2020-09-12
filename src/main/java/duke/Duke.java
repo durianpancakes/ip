@@ -127,5 +127,5 @@ public class Duke {
         taskHelper.printAllTasks();
         printEmptyLine();
         printHorizontalLine();
-    }
+    }   
 }
