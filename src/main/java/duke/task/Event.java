@@ -8,6 +8,12 @@ public class Event extends Task {
         this.at = at;
     }
 
+    public Event(String description, String at, boolean isDone) {
+        super(description);
+        this.at = at;
+        this.isDone = isDone;
+    }
+
     @Override
     public String getTypeIcon(){
         return "[E]";
