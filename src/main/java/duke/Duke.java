@@ -34,11 +34,6 @@ public class Duke {
             switch(commandType) {
             case "bye":
                 exitFlag = true;
-                try {
-                    TaskHelper.saveTasks();
-                } catch (IOException | DukeIOException e) {
-                    System.out.println("Unfortunately, there was a problem saving your tasks.");
-                }
                 break;
             case "list":
                 listTasks();
@@ -48,6 +43,11 @@ public class Duke {
                     try {
                         int itemNum = Integer.parseInt(commandArgs);
                         taskHelper.setTaskStatus(itemNum, true);
+                        try {
+                            TaskHelper.saveTasks();
+                        } catch (IOException | DukeIOException e) {
+                            System.out.println("Unfortunately, there was a problem saving your tasks.");
+                        }
                     } catch (NumberFormatException e){
                         printMsg("Please enter a valid item number!");
                     }
@@ -56,6 +56,11 @@ public class Duke {
             case "todo":
                 try {
                     taskHelper.addTodo(commandArgs);
+                    try {
+                        TaskHelper.saveTasks();
+                    } catch (IOException | DukeIOException e) {
+                        System.out.println("Unfortunately, there was a problem saving your tasks.");
+                    }
                 } catch (DukeInputException e) {
                     printMsg(e.error);
                 }
@@ -63,6 +68,11 @@ public class Duke {
             case "event":
                 try {
                     taskHelper.addEvent(commandArgs);
+                    try {
+                        TaskHelper.saveTasks();
+                    } catch (IOException | DukeIOException e) {
+                        System.out.println("Unfortunately, there was a problem saving your tasks.");
+                    }
                 } catch (DukeInputException e) {
                     printMsg(e.error);
                 }
@@ -70,6 +80,11 @@ public class Duke {
             case "deadline":
                 try {
                     taskHelper.addDeadline(commandArgs);
+                    try {
+                        TaskHelper.saveTasks();
+                    } catch (IOException | DukeIOException e) {
+                        System.out.println("Unfortunately, there was a problem saving your tasks.");
+                    }
                 } catch (DukeInputException e) {
                     printMsg(e.error);
                 }
@@ -79,6 +94,11 @@ public class Duke {
                     try {
                         int itemNum = Integer.parseInt(commandArgs);
                         taskHelper.deleteTask(itemNum);
+                        try {
+                            TaskHelper.saveTasks();
+                        } catch (IOException | DukeIOException e) {
+                            System.out.println("Unfortunately, there was a problem saving your tasks.");
+                        }
                     } catch (NumberFormatException e){
                         printMsg("Please enter a valid item number!");
                     }

@@ -34,42 +34,62 @@ public class TaskHelper {
             while(sc.hasNext()) {
                 String dataString = sc.nextLine();
                 final String[] data = dataString.trim().split("\\|", 3);
-                boolean isDone;
-                String description;
 
                 switch(data[0]) {
                 case "[T]":
-                    isDone = Boolean.parseBoolean(data[1]);
-                    description = data[2];
-                    taskList.add(new Todo(description, isDone));
+                    initializeTodo(data);
                     break;
                 case "[D]":
-                    isDone = Boolean.parseBoolean(data[1]);
-                    String[] deadlineInfo = data[2].trim().split("\\|", 2);
-                    description = deadlineInfo[0];
-                    String by = deadlineInfo[1];
-                    taskList.add(new Deadline(description, by, isDone));
+                    initializeDeadline(data);
                     break;
                 case "[E]":
-                    isDone = Boolean.parseBoolean(data[1]);
-                    String[] eventInfo = data[2].trim().split("\\|", 2);
-                    description = eventInfo[0];
-                    String at = eventInfo[1];
-                    taskList.add(new Event(description, at, isDone));
+                    initializeEvent(data);
                     break;
                 }
             }
         } else {
             // Data directory does not exist. Initialize data directory.
-            File file = new File(dataPath);
-            boolean dirCreated = file.mkdir();
-            if(dirCreated) {
-                file = new File(dataPath + "/tasks.txt");
-                file.createNewFile();
-            } else {
-                throw new DukeIOException();
-            }
+            createDataFile(dataPath);
         }
+    }
+
+    private static void createDataFile(String dataPath) throws IOException, DukeIOException {
+        File file = new File(dataPath);
+        boolean dirCreated = file.mkdir();
+        if(dirCreated) {
+            file = new File(dataPath + "/tasks.txt");
+            file.createNewFile();
+        } else {
+            throw new DukeIOException();
+        }
+    }
+
+    private static void initializeEvent(String[] data) {
+        boolean isDone;
+        String description;
+        isDone = Boolean.parseBoolean(data[1]);
+        String[] eventInfo = data[2].trim().split("\\|", 2);
+        description = eventInfo[0];
+        String at = eventInfo[1];
+        taskList.add(new Event(description, at, isDone));
+    }
+
+    private static void initializeDeadline(String[] data) {
+        boolean isDone;
+        String description;
+        isDone = Boolean.parseBoolean(data[1]);
+        String[] deadlineInfo = data[2].trim().split("\\|", 2);
+        description = deadlineInfo[0];
+        String by = deadlineInfo[1];
+        taskList.add(new Deadline(description, by, isDone));
+    }
+
+    private static void initializeTodo(String[] data) {
+        boolean isDone;
+        String description;
+        isDone = Boolean.parseBoolean(data[1]);
+        description = data[2];
+        taskList.add(new Todo(description, isDone));
     }
 
     public static void saveTasks() throws DukeIOException, IOException {
@@ -111,7 +131,7 @@ public class TaskHelper {
     }
 
     public void printAllTasks() {
-        if (taskList.size() == 0) {
+        if (taskList.isEmpty()) {
             System.out.println("You have not added any tasks yet!");
         } else {
             System.out.println("Here are the tasks in your list:");
@@ -136,18 +156,18 @@ public class TaskHelper {
     public void addDeadline(String commandArgs) throws DukeInputException {
         if(commandArgs.equals("")){
             throw new DukeInputException("Deadline description cannot be empty!");
-        } else {
-            try {
-                final String matchByPrefix = "/by";
-                final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
-                String description = commandArgs.substring(0, indexOfByPrefix).trim();
-                String by = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
-                Deadline deadline = new Deadline(description, by);
-                taskList.add(deadline);
-                printAddMsg(deadline);
-            } catch (StringIndexOutOfBoundsException e) {
-                throw new DukeInputException("Did you forget /by?");
-            }
+        }
+
+        try {
+            final String matchByPrefix = "/by";
+            final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
+            String description = commandArgs.substring(0, indexOfByPrefix).trim();
+            String by = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
+            Deadline deadline = new Deadline(description, by);
+            taskList.add(deadline);
+            printAddMsg(deadline);
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new DukeInputException("Did you forget /by?");
         }
     }
 
@@ -162,11 +182,10 @@ public class TaskHelper {
                 String at = commandArgs.substring(indexOfByPrefix).replace("/at", "").trim();
                 if(at.equals("")) {
                     throw new DukeInputException("Event at cannot be empty!");
-                } else {
-                    Event event = new Event(description, at);
-                    taskList.add(event);
-                    printAddMsg(event);
                 }
+                Event event = new Event(description, at);
+                taskList.add(event);
+                printAddMsg(event);
             } catch (StringIndexOutOfBoundsException e) {
                 throw new DukeInputException("Did you forget /at?");
             }
@@ -193,22 +212,30 @@ public class TaskHelper {
 
             task.setDone(isDone);
 
-            printHorizontalLine();
-            if (task.isDone) {
-                System.out.println("Nice! I've marked this task as done:");
-                System.out.println(task);
-            } else {
-                System.out.println("I've marked this task as not done:");
-                System.out.println(task);
-            }
-            printEmptyLine();
-            printHorizontalLine();
+            printSetTaskMsg(task);
         } else {
-            printHorizontalLine();
-            System.out.println("Invalid task number given!");
-            printEmptyLine();
-            printHorizontalLine();
+            printTaskError();
         }
+    }
+
+    private void printTaskError() {
+        printHorizontalLine();
+        System.out.println("Invalid task number given!");
+        printEmptyLine();
+        printHorizontalLine();
+    }
+
+    private void printSetTaskMsg(Task task) {
+        printHorizontalLine();
+        if (task.isDone) {
+            System.out.println("Nice! I've marked this task as done:");
+            System.out.println(task);
+        } else {
+            System.out.println("I've marked this task as not done:");
+            System.out.println(task);
+        }
+        printEmptyLine();
+        printHorizontalLine();
     }
 
     public void deleteTask(int itemNum) {
@@ -222,7 +249,7 @@ public class TaskHelper {
             System.out.println(task);
             if(taskList.size() == 1){
                 System.out.println("You have " + taskList.size() + " task in the list");
-            } else if(taskList.size() == 0) {
+            } else if(taskList.isEmpty()) {
                 System.out.println("You have no task in the list currently");
             } else {
                 System.out.println("You have " + taskList.size() + " tasks in the list");
@@ -230,10 +257,7 @@ public class TaskHelper {
             printEmptyLine();
             printHorizontalLine();
         } else {
-            printHorizontalLine();
-            System.out.println("Invalid task number given!");
-            printEmptyLine();
-            printHorizontalLine();
+            printTaskError();
         }
     }
 }
