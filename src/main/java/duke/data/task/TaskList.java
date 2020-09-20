@@ -36,6 +36,16 @@ public class TaskList {
         }
     }
 
+    public static ArrayList<Task> findTasks(String keyword) {
+        ArrayList<Task> resultList = new ArrayList<>();
+        for(Task task : taskList) {
+            if(task.getDescription().contains(keyword)) {
+                resultList.add(task);
+            }
+        }
+        return resultList;
+    }
+
     public static void addTodo(String commandArgs) throws DukeInputException {
         if(commandArgs.equals("")){
             throw new DukeInputException();

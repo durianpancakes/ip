@@ -86,7 +86,7 @@ public class Parser {
             TaskList.list();
             break;
         case "done":
-            if(!commandArgs.isEmpty()){
+            if(!commandArgs.isEmpty()) {
                 try {
                     int itemNum = Integer.parseInt(commandArgs);
                     TaskList.setTaskStatus(itemNum, true);
@@ -118,13 +118,18 @@ public class Parser {
             }
             break;
         case "delete":
-            if(!commandArgs.isEmpty()){
+            if(!commandArgs.isEmpty()) {
                 try {
                     int itemNum = Integer.parseInt(commandArgs);
                     TaskList.deleteTask(itemNum);
                 } catch (NumberFormatException e){
                     throw new DukeInputException();
                 }
+            }
+            break;
+        case "find":
+            if(!commandArgs.isEmpty()) {
+                UserInterface.printTaskList(TaskList.findTasks(commandArgs));
             }
             break;
         default:
