@@ -1,4 +1,4 @@
-package duke.task;
+package duke.data.task;
 
 public class Event extends Task {
     protected String at;
@@ -12,6 +12,10 @@ public class Event extends Task {
         super(description);
         this.at = at;
         this.isDone = isDone;
+    }
+
+    public String getAt() {
+        return at;
     }
 
     @Override

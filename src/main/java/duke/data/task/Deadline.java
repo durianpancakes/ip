@@ -1,4 +1,4 @@
-package duke.task;
+package duke.data.task;
 
 public class Deadline extends Task {
     protected String by;
@@ -12,6 +12,10 @@ public class Deadline extends Task {
         super(description);
         this.by = by;
         this.isDone = isDone;
+    }
+
+    public String getBy() {
+        return this.by;
     }
 
     @Override
