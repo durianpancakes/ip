@@ -3,6 +3,7 @@ package duke.ui;
 import duke.common.Messages;
 import duke.data.exception.DukeInputException;
 import duke.data.task.Task;
+import duke.data.task.TaskList;
 import duke.parser.Parser;
 
 import java.io.InputStream;
@@ -36,6 +37,7 @@ public class UserInterface {
         } else {
             out.println("You have " + totalTasks + " tasks in the list");
         }
+        TaskList.list();
         out.print(LINE_SEPARATOR);
         out.println(DIVIDER);
     }
@@ -53,6 +55,7 @@ public class UserInterface {
         } else {
             System.out.println("You have " + totalTasks + " tasks in the list");
         }
+        TaskList.list();
         out.print(LINE_SEPARATOR);
         out.println(DIVIDER);
     }
@@ -93,7 +96,11 @@ public class UserInterface {
         try {
             return Parser.parseCommand(userInput);
         } catch (DukeInputException e) {
-            out.print(Messages.MESSAGE_INVALID_INPUT);
+            out.println(DIVIDER);
+            out.println(Messages.MESSAGE_INVALID_INPUT);
+            printHelpMessage();
+            out.print(LINE_SEPARATOR);
+            out.println(DIVIDER);
         }
         return false;
     }
@@ -109,7 +116,7 @@ public class UserInterface {
         out.println("1. list");
         out.println("2. todo <description>");
         out.println("3. event <description> /at <date time>");
-        out.println("4. deadline <description> /by <date time>");
+        out.println("4. deadline <description> /by <YYYY-MM-DD>");
         out.println("5. done <item number>");
         out.println("6. delete <item number>");
     }

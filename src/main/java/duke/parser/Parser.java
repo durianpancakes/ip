@@ -5,6 +5,9 @@ import duke.data.task.*;
 import duke.storage.Storage;
 import duke.ui.UserInterface;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public class Parser {
     public static Task parseTaskFromString(String encodedTask) {
         final String[] data = encodedTask.trim().split("\\|", 3);
@@ -21,24 +24,37 @@ public class Parser {
         }
     }
 
-    public static Deadline parseDeadlineInput(String commandArgs) {
+    public static Deadline parseDeadlineInput(String commandArgs) throws DukeInputException {
         final String matchByPrefix = "/by";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
-        String by = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
-        if(by.equals("")) {
+        String byString = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
+        if(byString.equals("")) {
             UserInterface.printToUser("Deadline by cannot be empty!");
+            throw new DukeInputException();
+        }
+        LocalDate by;
+        try {
+            by = parseLocalDate(byString);
+        } catch (DateTimeParseException e) {
+            UserInterface.printToUser("Date input is invalid!");
+            throw new DukeInputException();
         }
         return new Deadline(description, by);
     }
 
-    public static Event parseEventInput(String commandArgs) {
+    private static LocalDate parseLocalDate(String localDateString) {
+        return LocalDate.parse(localDateString);
+    }
+
+    public static Event parseEventInput(String commandArgs) throws DukeInputException {
         final String matchByPrefix = "/at";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String at = commandArgs.substring(indexOfByPrefix).replace("/at", "").trim();
         if(at.equals("")) {
             UserInterface.printToUser("Event at cannot be empty!");
+            throw new DukeInputException();
         }
         return new Event(description, at);
     }
@@ -68,8 +84,8 @@ public class Parser {
         isDone = Boolean.parseBoolean(data[1]);
         String[] deadlineInfo = data[2].trim().split("\\|", 2);
         description = deadlineInfo[0];
-        String by = deadlineInfo[1];
-        return new Deadline(description, by, isDone);
+        String byString = deadlineInfo[1];
+        return new Deadline(description, parseLocalDate(byString), isDone);
     }
 
     public static boolean parseCommand(String userInput) throws DukeInputException {

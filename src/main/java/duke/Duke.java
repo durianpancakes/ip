@@ -6,10 +6,6 @@ import duke.storage.Storage;
 import duke.ui.UserInterface;
 
 public class Duke {
-    private Storage storage;
-    private TaskList tasks;
-    private UserInterface ui;
-    private static boolean exitFlag;
 
     public static void main(String[] args) {
         boolean exitFlag = false;

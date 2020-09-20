@@ -11,12 +11,7 @@ import java.util.ArrayList;
 import static duke.parser.Parser.parseEventInput;
 
 public class TaskList {
-    private static TaskList INSTANCE = null;
     private static ArrayList<Task> taskList;
-
-    public TaskList () {
-        taskList = new ArrayList<>();
-    }
 
     public TaskList (ArrayList<Task> taskList) {
         TaskList.taskList = taskList;
@@ -30,7 +25,6 @@ public class TaskList {
         Storage storage = new Storage();
         try {
             storage.save(taskList);
-            UserInterface.printSaveSuccess();
         } catch (IOException e) {
             UserInterface.printSaveError();
         }
@@ -42,6 +36,7 @@ public class TaskList {
         }
         Todo todo = new Todo(commandArgs);
         taskList.add(todo);
+        save();
         UserInterface.printAddSuccessMsg(todo, taskList.size());
     }
 
@@ -53,6 +48,7 @@ public class TaskList {
         try {
             Deadline deadline = Parser.parseDeadlineInput(commandArgs);
             taskList.add(deadline);
+            save();
             UserInterface.printAddSuccessMsg(deadline, taskList.size());
         } catch (StringIndexOutOfBoundsException e) {
             UserInterface.printToUser("Did you forget /by?");
@@ -66,6 +62,7 @@ public class TaskList {
         try {
             Event event = parseEventInput(commandArgs);
             taskList.add(event);
+            save();
             UserInterface.printAddSuccessMsg(event, taskList.size());
         } catch (StringIndexOutOfBoundsException e) {
             UserInterface.printToUser("Did you forget /at?");
@@ -76,9 +73,8 @@ public class TaskList {
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
             Task task = taskList.get(itemIdx);
-
             task.setDone(isDone);
-
+            save();
             UserInterface.printSetTaskMsg(task);
         } else {
             throw new DukeInputException();
@@ -90,7 +86,7 @@ public class TaskList {
             int itemIdx = itemNum - 1;
             Task task = taskList.get(itemIdx);
             taskList.remove(itemIdx);
-
+            save();
             UserInterface.printDeleteSuccessMsg(task, taskList.size());
         } else {
             throw new DukeInputException();
