@@ -6,7 +6,11 @@ import duke.storage.Storage;
 import duke.ui.UserInterface;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
+
 
 public class Parser {
     public static Task parseTaskFromString(String encodedTask) {
@@ -33,9 +37,9 @@ public class Parser {
             UserInterface.printToUser("Deadline by cannot be empty!");
             throw new DukeInputException();
         }
-        LocalDate by;
+        LocalDateTime by;
         try {
-            by = parseLocalDate(byString);
+            by = parseLocalDateTime(byString);
         } catch (DateTimeParseException e) {
             UserInterface.printToUser("Date input is invalid!");
             throw new DukeInputException();
@@ -43,8 +47,9 @@ public class Parser {
         return new Deadline(description, by);
     }
 
-    private static LocalDate parseLocalDate(String localDateString) {
-        return LocalDate.parse(localDateString);
+    private static LocalDateTime parseLocalDateTime(String localDateTimeString) {
+        System.out.println(localDateTimeString);
+        return LocalDateTime.parse(localDateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-DD HHmm"));
     }
 
     public static Event parseEventInput(String commandArgs) throws DukeInputException {
@@ -85,7 +90,7 @@ public class Parser {
         String[] deadlineInfo = data[2].trim().split("\\|", 2);
         description = deadlineInfo[0];
         String byString = deadlineInfo[1];
-        return new Deadline(description, parseLocalDate(byString), isDone);
+        return new Deadline(description, LocalDateTime.parse(byString), isDone);
     }
 
     public static boolean parseCommand(String userInput) throws DukeInputException {
@@ -99,10 +104,19 @@ public class Parser {
             TaskList.save();
             return true;
         case "list":
-            TaskList.list();
+            if(!commandArgs.isEmpty()) {
+                try {
+                    UserInterface.printTaskList(TaskList.tasksOnDate(parseLocalDateTime(commandArgs)));
+                } catch (DateTimeParseException e) {
+                    UserInterface.printToUser("Invalid date given!");
+                    throw new DukeInputException();
+                }
+            } else {
+                TaskList.list();
+            }
             break;
         case "done":
-            if(!commandArgs.isEmpty()){
+            if(!commandArgs.isEmpty()) {
                 try {
                     int itemNum = Integer.parseInt(commandArgs);
                     TaskList.setTaskStatus(itemNum, true);
