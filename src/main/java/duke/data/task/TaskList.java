@@ -15,14 +15,25 @@ import static duke.parser.Parser.parseEventInput;
 public class TaskList {
     private static ArrayList<Task> taskList;
 
+    /**
+     * Constructor for TaskList
+     *
+     * @param taskList ArrayList<Task>
+     */
     public TaskList (ArrayList<Task> taskList) {
         TaskList.taskList = taskList;
     }
 
+    /**
+     * Prints the taskList using the UserInterface.printTaskList(ArrayList<Task>) method
+     */
     public static void list() {
         UserInterface.printTaskList(taskList);
     }
 
+    /**
+     * Writes the taskList into data.txt.
+     */
     public static void save() {
         Storage storage = new Storage();
         try {
@@ -32,6 +43,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Add a Todo into the taskList.
+     *
+     * @param commandArgs String input from user.
+     * @throws DukeInputException If the user leaves the description empty.
+     */
     public static void addTodo(String commandArgs) throws DukeInputException {
         if(commandArgs.equals("")){
             throw new DukeInputException();
@@ -42,7 +59,12 @@ public class TaskList {
         UserInterface.printAddSuccessMsg(todo, taskList.size());
     }
 
-
+    /**
+     * Add a Deadline into the taskList.
+     *
+     * @param commandArgs String input from user
+     * @throws DukeInputException If the user leaves the description empty or omits the /by separator.
+     */
     public static void addDeadline(String commandArgs) throws DukeInputException {
         if(commandArgs.equals("")){
             throw new DukeInputException();
@@ -57,6 +79,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Add an Event into the taskList
+     *
+     * @param commandArgs String input from user
+     * @throws DukeInputException If the user leaves the description empty or omits the /at separator.
+     */
     public static void addEvent(String commandArgs) throws DukeInputException {
         if(commandArgs.equals("")){
             throw new DukeInputException();
@@ -71,6 +99,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Set a valid task's status
+     *
+     * @param itemNum Integer index provided by user
+     * @param isDone boolean for the Task
+     * @throws DukeInputException If the index provided is out of the ArrayList's size
+     */
     public static void setTaskStatus(int itemNum, boolean isDone) throws DukeInputException {
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
@@ -83,6 +118,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Delete a valid Task from the taskList
+     *
+     * @param itemNum Integer index provided by user
+     * @throws DukeInputException If the index provided is out of the ArrayList's size
+     */
     public static void deleteTask(int itemNum) throws DukeInputException {
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
@@ -93,5 +134,19 @@ public class TaskList {
         } else {
             throw new DukeInputException();
         }
+    }
+
+    public static ArrayList<Task> tasksOnDate(LocalDateTime date) {
+        ArrayList<Task> resultList = new ArrayList<>();
+
+        for(Task task : taskList) {
+            if(task instanceof Deadline) {
+                if(((Deadline) task).getBy().isEqual(date)) {
+                    resultList.add(task);
+                }
+            }
+        }
+
+        return resultList;
     }
 }

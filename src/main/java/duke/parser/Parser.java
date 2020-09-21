@@ -13,6 +13,12 @@ import java.util.Date;
 
 
 public class Parser {
+    /**
+     * Returns a Task input from data.txt
+     *
+     * @param encodedTask String from data.txt.
+     * @return Task
+     */
     public static Task parseTaskFromString(String encodedTask) {
         final String[] data = encodedTask.trim().split("\\|", 3);
 
@@ -28,6 +34,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Returns a Deadline input from user
+     *
+     * @param commandArgs String input from user
+     * @return Deadline
+     * @throws DukeInputException If user leaves /by of Deadline empty, or when date input of /by is invalid
+     */
     public static Deadline parseDeadlineInput(String commandArgs) throws DukeInputException {
         final String matchByPrefix = "/by";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
@@ -52,6 +65,13 @@ public class Parser {
         return LocalDateTime.parse(localDateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-DD HHmm"));
     }
 
+    /**
+     * Returns an Event input by user.
+     *
+     * @param commandArgs String input from user
+     * @return Event
+     * @throws DukeInputException If user leaves /at of Event empty
+     */
     public static Event parseEventInput(String commandArgs) throws DukeInputException {
         final String matchByPrefix = "/at";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
@@ -64,6 +84,12 @@ public class Parser {
         return new Event(description, at);
     }
 
+    /**
+     * Returns a Todo parsed from data.txt.
+     *
+     * @param data String array containing Todo data
+     * @return Todo
+     */
     private static Todo parseTodo(String[] data) {
         boolean isDone;
         String description;
@@ -73,6 +99,12 @@ public class Parser {
         return new Todo(description, isDone);
     }
 
+    /**
+     * Returns an Event parsed from data.txt.
+     *
+     * @param data String array containing Event data
+     * @return Event
+     */
     private static Event parseEvent(String[] data) {
         boolean isDone;
         String description;
@@ -83,6 +115,12 @@ public class Parser {
         return new Event(description, at, isDone);
     }
 
+    /**
+     * Returns a Deadline parsed from data.txt.
+     *
+     * @param data String array containing Deadline data
+     * @return Deadline
+     */
     private static Deadline parseDeadline(String[] data) {
         boolean isDone;
         String description;
@@ -93,6 +131,13 @@ public class Parser {
         return new Deadline(description, LocalDateTime.parse(byString), isDone);
     }
 
+    /**
+     * Returns a boolean to determine if Duke should continue running.
+     *
+     * @param userInput User input from UserInterface class
+     * @return boolean exitFlag
+     * @throws DukeInputException If input from user is invalid
+     */
     public static boolean parseCommand(String userInput) throws DukeInputException {
         final String[] split = userInput.trim().split("\\s+", 2);
         final String[] commandTypeAndParams = split.length == 2 ? split : new String[]{split[0], ""};
