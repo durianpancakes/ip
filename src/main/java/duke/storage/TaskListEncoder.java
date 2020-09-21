@@ -29,7 +29,8 @@ public class TaskListEncoder {
         } else if (task instanceof Event) {
             Event event = (Event) task;
             return event.getTypeIcon() + "|" + event.getDone() + "|"
-                    + event.getDescription() + "|" + event.getAt();
+                    + event.getDescription() + "|" + event.getAtStart()
+                    + "|" + event.getAtEnd();
         }
         return null;
     }

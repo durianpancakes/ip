@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static duke.parser.Parser.parseEventInput;
 
@@ -136,12 +137,19 @@ public class TaskList {
         }
     }
 
-    public static ArrayList<Task> tasksOnDate(LocalDateTime date) {
+    public static ArrayList<Task> tasksOnDate(LocalDate date) {
         ArrayList<Task> resultList = new ArrayList<>();
 
         for(Task task : taskList) {
             if(task instanceof Deadline) {
-                if(((Deadline) task).getBy().isEqual(date)) {
+                LocalDate deadlineDate = ((Deadline) task).getBy().toLocalDate();
+                if (deadlineDate.isEqual(date)) {
+                    resultList.add(task);
+                }
+            }
+            if(task instanceof Event) {
+                LocalDate eventDate = ((Event) task).getAtStart().toLocalDate();
+                if (eventDate.isEqual(date)) {
                     resultList.add(task);
                 }
             }

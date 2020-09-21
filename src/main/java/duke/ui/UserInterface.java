@@ -113,10 +113,10 @@ public class UserInterface {
 
     public void printHelpMessage() {
         out.println("The following commands are available:");
-        out.println("1. list");
+        out.println("1. list *optional* <yyyy-MM-dd>");
         out.println("2. todo <description>");
-        out.println("3. event <description> /at <date time>");
-        out.println("4. deadline <description> /by <YYYY-MM-DD HHMM>");
+        out.println("3. event <description> /at <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
+        out.println("4. deadline <description> /by <yyyy-MM-dd HHmm>");
         out.println("5. done <item number>");
         out.println("6. delete <item number>");
     }

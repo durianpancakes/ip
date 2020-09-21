@@ -60,11 +60,6 @@ public class Parser {
         return new Deadline(description, by);
     }
 
-    private static LocalDateTime parseLocalDateTime(String localDateTimeString) {
-        System.out.println(localDateTimeString);
-        return LocalDateTime.parse(localDateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-DD HHmm"));
-    }
-
     /**
      * Returns an Event input by user.
      *
@@ -76,12 +71,27 @@ public class Parser {
         final String matchByPrefix = "/at";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
-        String at = commandArgs.substring(indexOfByPrefix).replace("/at", "").trim();
+        String at = commandArgs.substring(indexOfByPrefix).replace(matchByPrefix, "").trim();
         if(at.equals("")) {
             UserInterface.printToUser("Event at cannot be empty!");
             throw new DukeInputException();
         }
-        return new Event(description, at);
+        LocalDateTime atStart, atEnd;
+        final String matchToPrefix = "/to";
+        String[] startString = at.replace(matchToPrefix, "|").split("\\|");
+        try {
+            atStart = parseLocalDateTime(startString[0].trim());
+            atEnd = parseLocalDateTime(startString[1].trim());
+        } catch (DateTimeParseException e) {
+            UserInterface.printToUser("Date input is invalid!");
+            throw new DukeInputException();
+        }
+        return new Event(description, atStart, atEnd);
+    }
+
+    private static LocalDateTime parseLocalDateTime(String localDateTimeString) {
+        System.out.println(localDateTimeString);
+        return LocalDateTime.parse(localDateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
     }
 
     /**
@@ -109,10 +119,12 @@ public class Parser {
         boolean isDone;
         String description;
         isDone = Boolean.parseBoolean(data[1]);
-        String[] eventInfo = data[2].trim().split("\\|", 2);
+        String[] eventInfo = data[2].trim().split("\\|", 3);
         description = eventInfo[0];
-        String at = eventInfo[1];
-        return new Event(description, at, isDone);
+        LocalDateTime start = LocalDateTime.parse(eventInfo[1]);
+        LocalDateTime end = LocalDateTime.parse(eventInfo[2]);
+
+        return new Event(description, start, end, isDone);
     }
 
     /**
@@ -151,7 +163,7 @@ public class Parser {
         case "list":
             if(!commandArgs.isEmpty()) {
                 try {
-                    UserInterface.printTaskList(TaskList.tasksOnDate(parseLocalDateTime(commandArgs)));
+                    UserInterface.printTaskList(TaskList.tasksOnDate(LocalDate.parse(commandArgs)));
                 } catch (DateTimeParseException e) {
                     UserInterface.printToUser("Invalid date given!");
                     throw new DukeInputException();
