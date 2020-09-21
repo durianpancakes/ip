@@ -1,21 +1,31 @@
 package duke.data.task;
 
-public class Event extends Task {
-    protected String at;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String description, String at) {
+public class Event extends Task {
+    protected LocalDateTime atStart;
+    protected LocalDateTime atEnd;
+
+    public Event(String description, LocalDateTime start, LocalDateTime end) {
         super(description);
-        this.at = at;
+        this.atStart = start;
+        this.atEnd = end;
     }
 
-    public Event(String description, String at, boolean isDone) {
+    public Event(String description, LocalDateTime start, LocalDateTime end, boolean isDone) {
         super(description);
-        this.at = at;
+        this.atStart = start;
+        this.atEnd = end;
         this.isDone = isDone;
     }
 
-    public String getAt() {
-        return at;
+    public LocalDateTime getAtStart() {
+        return atStart;
+    }
+
+    public LocalDateTime getAtEnd() {
+        return atEnd;
     }
 
     @Override
@@ -25,6 +35,10 @@ public class Event extends Task {
 
     @Override
     public String toString(){
-        return super.toString() + " (at: " + at + ")";
+        return super.toString() + " (at: "
+                + atStart.format(DateTimeFormatter.ofPattern("MMM d yyyy hh:mm a"))
+                + " to "
+                + atEnd.format(DateTimeFormatter.ofPattern("MMM d yyyy hh:mm a"))
+                + ")";
     }
 }

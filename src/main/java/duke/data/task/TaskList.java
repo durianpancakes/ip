@@ -6,7 +6,10 @@ import duke.storage.Storage;
 import duke.ui.UserInterface;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static duke.parser.Parser.parseEventInput;
 
@@ -22,10 +25,16 @@ public class TaskList {
         TaskList.taskList = taskList;
     }
 
+    /**
+     * Prints the taskList using the UserInterface.printTaskList(ArrayList<Task>) method
+     */
     public static void list() {
         UserInterface.printTaskList(taskList);
     }
 
+    /**
+     * Writes the taskList into data.txt.
+     */
     public static void save() {
         Storage storage = new Storage();
         try {
@@ -46,12 +55,19 @@ public class TaskList {
         return resultList;
     }
 
+    /**
+     * Add a Todo into the taskList.
+     *
+     * @param commandArgs String input from user.
+     * @throws DukeInputException If the user leaves the description empty.
+     */
     public static void addTodo(String commandArgs) throws DukeInputException {
         if(commandArgs.equals("")){
             throw new DukeInputException();
         }
         Todo todo = new Todo(commandArgs);
         taskList.add(todo);
+        save();
         UserInterface.printAddSuccessMsg(todo, taskList.size());
     }
 
@@ -63,12 +79,19 @@ public class TaskList {
         try {
             Deadline deadline = Parser.parseDeadlineInput(commandArgs);
             taskList.add(deadline);
+            save();
             UserInterface.printAddSuccessMsg(deadline, taskList.size());
         } catch (StringIndexOutOfBoundsException e) {
             UserInterface.printToUser("Did you forget /by?");
         }
     }
 
+    /**
+     * Add an Event into the taskList
+     *
+     * @param commandArgs String input from user
+     * @throws DukeInputException If the user leaves the description empty or omits the /at separator.
+     */
     public static void addEvent(String commandArgs) throws DukeInputException {
         if(commandArgs.equals("")){
             throw new DukeInputException();
@@ -76,12 +99,20 @@ public class TaskList {
         try {
             Event event = parseEventInput(commandArgs);
             taskList.add(event);
+            save();
             UserInterface.printAddSuccessMsg(event, taskList.size());
         } catch (StringIndexOutOfBoundsException e) {
             UserInterface.printToUser("Did you forget /at?");
         }
     }
 
+    /**
+     * Set a valid task's status
+     *
+     * @param itemNum Integer index provided by user
+     * @param isDone boolean for the Task
+     * @throws DukeInputException If the index provided is out of the ArrayList's size
+     */
     public static void setTaskStatus(int itemNum, boolean isDone) throws DukeInputException {
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
@@ -95,6 +126,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Delete a valid Task from the taskList
+     *
+     * @param itemNum Integer index provided by user
+     * @throws DukeInputException If the index provided is out of the ArrayList's size
+     */
     public static void deleteTask(int itemNum) throws DukeInputException {
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
@@ -105,5 +142,26 @@ public class TaskList {
         } else {
             throw new DukeInputException();
         }
+    }
+
+    public static ArrayList<Task> tasksOnDate(LocalDate date) {
+        ArrayList<Task> resultList = new ArrayList<>();
+
+        for(Task task : taskList) {
+            if(task instanceof Deadline) {
+                LocalDate deadlineDate = ((Deadline) task).getBy().toLocalDate();
+                if (deadlineDate.isEqual(date)) {
+                    resultList.add(task);
+                }
+            }
+            if(task instanceof Event) {
+                LocalDate eventDate = ((Event) task).getAtStart().toLocalDate();
+                if (eventDate.isEqual(date)) {
+                    resultList.add(task);
+                }
+            }
+        }
+
+        return resultList;
     }
 }
