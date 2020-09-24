@@ -45,14 +45,14 @@ public class Parser {
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String byString = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
         if(byString.equals("")) {
-            UserInterface.printToUser("Deadline by cannot be empty!");
+            UserInterface.printToUser("ERROR: Deadline by cannot be empty!");
             throw new DukeInputException();
         }
         LocalDateTime by;
         try {
             by = parseLocalDateTime(byString);
         } catch (DateTimeParseException e) {
-            UserInterface.printToUser("Date input is invalid!");
+            UserInterface.printToUser("ERROR: Date input is invalid!");
             throw new DukeInputException();
         }
         return new Deadline(description, by);
@@ -71,7 +71,7 @@ public class Parser {
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String at = commandArgs.substring(indexOfByPrefix).replace(matchByPrefix, "").trim();
         if(at.equals("")) {
-            UserInterface.printToUser("Event at cannot be empty!");
+            UserInterface.printToUser("ERROR: Event at cannot be empty!");
             throw new DukeInputException();
         }
         LocalDateTime atStart, atEnd;
@@ -81,7 +81,7 @@ public class Parser {
             atStart = parseLocalDateTime(startString[0].trim());
             atEnd = parseLocalDateTime(startString[1].trim());
         } catch (DateTimeParseException e) {
-            UserInterface.printToUser("Date input is invalid!");
+            UserInterface.printToUser("ERROR: Date input is invalid!");
             throw new DukeInputException();
         }
         return new Event(description, atStart, atEnd);
@@ -163,7 +163,7 @@ public class Parser {
                 try {
                     UserInterface.printTaskList(TaskList.tasksOnDate(LocalDate.parse(commandArgs)));
                 } catch (DateTimeParseException e) {
-                    UserInterface.printToUser("Invalid date given!");
+                    UserInterface.printToUser("ERROR: Invalid date given!");
                     throw new DukeInputException();
                 }
             } else {
@@ -215,6 +215,9 @@ public class Parser {
         case "find":
             if(!commandArgs.isEmpty()) {
                 UserInterface.printTaskList(TaskList.findTasks(commandArgs));
+            } else {
+                UserInterface.printToUser("ERROR: You need to give me a keyword to find!");
+                throw new DukeInputException();
             }
             break;
         default:
