@@ -1,10 +1,9 @@
 package duke.storage;
 
-import duke.data.exception.DukeInitializeException;
+import duke.data.exceptions.DukeInitializeException;
 import duke.data.task.Task;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,6 +16,13 @@ public class Storage {
     private static final String DIRECTORY_PATH = new File("data").getAbsolutePath();
     private static final String FILE_PATH = DIRECTORY_PATH + "/tasks.txt";
 
+    /**
+     * Returns an ArrayList of tasks processed from Duke's storage.
+     *
+     * @return ArrayList containing Tasks from Duke's storage.
+     * @throws DukeInitializeException If the data directory doesn't exist, or when the creation
+     * of tasks.txt fails.
+     */
     public static ArrayList<Task> load() throws DukeInitializeException {
         if(Files.exists(Path.of(DIRECTORY_PATH))){
             // Data directory exists
@@ -44,6 +50,11 @@ public class Storage {
         }
     }
 
+    /**
+     * Creates the .txt file to store tasks.
+     *
+     * @throws IOException If the creation of the .txt file fails.
+     */
     private static void createDataFile() throws IOException {
         File file = new File(Storage.DIRECTORY_PATH);
         boolean dirCreated = file.mkdir();
@@ -53,6 +64,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves the ArrayList of tasks in a String format into Duke's storage.
+     *
+     * @param taskList ArrayList of tasks to be saved.
+     * @throws IOException If there is an error while writing to Duke's storage.
+     */
     public void save(ArrayList<Task> taskList) throws IOException {
         List<String> encodedTaskList = TaskListEncoder.encodeTaskList(taskList);
         Files.write(Path.of(FILE_PATH), encodedTaskList);

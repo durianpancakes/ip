@@ -1,7 +1,7 @@
 package duke.ui;
 
 import duke.common.Messages;
-import duke.data.exception.DukeInputException;
+import duke.data.exceptions.DukeInputException;
 import duke.data.task.Task;
 import duke.data.task.TaskList;
 import duke.parser.Parser;
@@ -27,6 +27,12 @@ public class UserInterface {
         UserInterface.out = out;
     }
 
+    /**
+     * Displays a message upon successful adding of a Task into the taskList
+     *
+     * @param task
+     * @param totalTasks
+     */
     public static void printAddSuccessMsg(Task task, int totalTasks) {
         boolean containsOneTask = totalTasks == 1;
 
@@ -42,6 +48,12 @@ public class UserInterface {
         out.println(DIVIDER);
     }
 
+    /**
+     * Displays a message upon successful deletion of a Task from a taskList
+     *
+     * @param task the Task that is deleted
+     * @param totalTasks total number of tasks in the current taskList
+     */
     public static void printDeleteSuccessMsg(Task task, int totalTasks) {
         boolean containsOneTask = totalTasks == 1;
 
@@ -60,6 +72,11 @@ public class UserInterface {
         out.println(DIVIDER);
     }
 
+    /**
+     * Displays a message upon successful setting of a Task's isDone.
+     *
+     * @param task the Task that is set
+     */
     public static void printSetTaskMsg(Task task) {
         out.println(DIVIDER);
         if (task.getDone()) {
@@ -73,6 +90,11 @@ public class UserInterface {
         out.println(DIVIDER);
     }
 
+    /**
+     * Displays an ArrayList of Tasks.
+     *
+     * @param taskList ArrayList<Task> containing Tasks.
+     */
     public static void printTaskList(ArrayList<Task> taskList) {
         out.println(DIVIDER);
         if (taskList.isEmpty()) {
@@ -89,7 +111,11 @@ public class UserInterface {
         out.println(DIVIDER);
     }
 
-
+    /**
+     * Method to read user input from Scanner.
+     *
+     * @return boolean to determine if Duke continues running.
+     */
     public boolean getUserCommand() {
         out.println("What would you like me to do?");
         String userInput = in.nextLine();
@@ -105,12 +131,18 @@ public class UserInterface {
         return false;
     }
 
+    /**
+     * Displays a welcome message.
+     */
     public void printWelcomeMessage() {
         out.println(Messages.MESSAGE_LOGO);
         out.println(Messages.MESSAGE_WELCOME);
         printHelpMessage();
     }
 
+    /**
+     * Displays a list of commands available to the user.
+     */
     public void printHelpMessage() {
         out.println("The following commands are available:");
         out.println("1. list *optional* <yyyy-MM-dd>");
@@ -121,26 +153,43 @@ public class UserInterface {
         out.println("6. delete <item number>");
     }
 
+    /**
+     * Displays an error message upon failed initialization.
+     */
     public static void printInitError() {
         out.println(DIVIDER);
         out.println(Messages.MESSAGE_INIT_FAILED);
         out.println(DIVIDER);
     }
 
+    /**
+     * Displays an error message upon an invalid input while adding a Task.
+     */
     public static void printAddError() {
         out.println(DIVIDER);
         out.println(Messages.MESSAGE_INCOMPLETE_INPUT);
         out.println(DIVIDER);
     }
 
+    /**
+     * Displays a message to the user
+     *
+     * @param string
+     */
     public static void printToUser(String string) {
         out.println(string);
     }
 
+    /**
+     * Displays a message upon the successful saving of the taskList.
+     */
     public static void printSaveSuccess() {
         out.println(Messages.MESSAGE_SAVE_SUCCESSFUL);
     }
 
+    /**
+     * Displays an error message upon the failure to save the taskList.
+     */
     public static void printSaveError() {
         out.println(DIVIDER);
         out.println(Messages.MESSAGE_SAVE_FAILED);

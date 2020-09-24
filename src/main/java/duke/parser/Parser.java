@@ -1,20 +1,18 @@
 package duke.parser;
 
-import duke.data.exception.DukeInputException;
+import duke.data.exceptions.DukeInputException;
 import duke.data.task.*;
-import duke.storage.Storage;
 import duke.ui.UserInterface;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 
 
 public class Parser {
     /**
-     * Returns a Task input from data.txt
+     * Returns a Task input from data.txt.
      *
      * @param encodedTask String from data.txt.
      * @return Task
@@ -35,11 +33,11 @@ public class Parser {
     }
 
     /**
-     * Returns a Deadline input from user
+     * Returns a Deadline input from user.
      *
-     * @param commandArgs String input from user
-     * @return Deadline
-     * @throws DukeInputException If user leaves /by of Deadline empty, or when date input of /by is invalid
+     * @param commandArgs String input from user.
+     * @return Deadline.
+     * @throws DukeInputException If user leaves /by of Deadline empty, or when date input of /by is invalid.
      */
     public static Deadline parseDeadlineInput(String commandArgs) throws DukeInputException {
         final String matchByPrefix = "/by";
@@ -63,9 +61,9 @@ public class Parser {
     /**
      * Returns an Event input by user.
      *
-     * @param commandArgs String input from user
-     * @return Event
-     * @throws DukeInputException If user leaves /at of Event empty
+     * @param commandArgs String input from user.
+     * @return Event.
+     * @throws DukeInputException If user leaves /at of Event empty.
      */
     public static Event parseEventInput(String commandArgs) throws DukeInputException {
         final String matchByPrefix = "/at";
@@ -97,8 +95,8 @@ public class Parser {
     /**
      * Returns a Todo parsed from data.txt.
      *
-     * @param data String array containing Todo data
-     * @return Todo
+     * @param data String array containing Todo data.
+     * @return Todo.
      */
     private static Todo parseTodo(String[] data) {
         boolean isDone;
@@ -112,8 +110,8 @@ public class Parser {
     /**
      * Returns an Event parsed from data.txt.
      *
-     * @param data String array containing Event data
-     * @return Event
+     * @param data String array containing Event data.
+     * @return Event.
      */
     private static Event parseEvent(String[] data) {
         boolean isDone;
@@ -130,8 +128,8 @@ public class Parser {
     /**
      * Returns a Deadline parsed from data.txt.
      *
-     * @param data String array containing Deadline data
-     * @return Deadline
+     * @param data String array containing Deadline data.
+     * @return Deadline.
      */
     private static Deadline parseDeadline(String[] data) {
         boolean isDone;
@@ -146,9 +144,9 @@ public class Parser {
     /**
      * Returns a boolean to determine if Duke should continue running.
      *
-     * @param userInput User input from UserInterface class
-     * @return boolean exitFlag
-     * @throws DukeInputException If input from user is invalid
+     * @param userInput User input from UserInterface class.
+     * @return boolean exitFlag.
+     * @throws DukeInputException If input from user is invalid.
      */
     public static boolean parseCommand(String userInput) throws DukeInputException {
         final String[] split = userInput.trim().split("\\s+", 2);

@@ -1,5 +1,8 @@
 package duke.common;
 
+/**
+ * Class containing all message strings used by Duke.
+ */
 public class Messages {
     public static final String MESSAGE_LOGO = " ____        _        \n"
             + "|  _ \\ _   _| | _____ \n"

@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskListDecoder {
+    /**
+     * Returns an ArrayList of tasks decoded from an encoded ArrayList of strings.
+     *
+     * @param encodedTaskList ArrayList of strings.
+     * @return ArrayList of tasks containing the decoded Tasks.
+     */
     public static ArrayList<Task> decodeTaskList(List<String> encodedTaskList) {
         final ArrayList<Task> decodedTasks = new ArrayList<>();
         for(String encodedTask : encodedTaskList) {
@@ -16,6 +22,12 @@ public class TaskListDecoder {
         return decodedTasks;
     }
 
+    /**
+     * Returns a Task decoded from an encoded String.
+     *
+     * @param encodedTask encoded String of a Task.
+     * @return Task converted from String.
+     */
     private static Task decodeTaskFromString (String encodedTask) {
         return Parser.parseTaskFromString(encodedTask);
     }

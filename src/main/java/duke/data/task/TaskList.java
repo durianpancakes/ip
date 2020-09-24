@@ -1,15 +1,13 @@
 package duke.data.task;
 
-import duke.data.exception.DukeInputException;
+import duke.data.exceptions.DukeInputException;
 import duke.parser.Parser;
 import duke.storage.Storage;
 import duke.ui.UserInterface;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 import static duke.parser.Parser.parseEventInput;
 
@@ -26,7 +24,7 @@ public class TaskList {
     }
 
     /**
-     * Prints the taskList using the UserInterface.printTaskList(ArrayList<Task>) method
+     * Prints the taskList using the UserInterface.printTaskList(...) method.
      */
     public static void list() {
         UserInterface.printTaskList(taskList);
@@ -45,6 +43,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns an ArrayList of tasks containing tasks that matches a keyword.
+     *
+     * @param keyword String containing the keyword given by the user.
+     * @return ArrayList of tasks containing tasks that matches the keyword.
+     */
     public static ArrayList<Task> findTasks(String keyword) {
         ArrayList<Task> resultList = new ArrayList<>();
         for(Task task : taskList) {
@@ -72,6 +76,12 @@ public class TaskList {
     }
 
 
+    /**
+     * Add a Deadline into the taskList.
+     *
+     * @param commandArgs String input from the user.
+     * @throws DukeInputException If the user leaves the description empty or omits the /by separator.
+     */
     public static void addDeadline(String commandArgs) throws DukeInputException {
         if(commandArgs.equals("")){
             throw new DukeInputException();
@@ -87,9 +97,9 @@ public class TaskList {
     }
 
     /**
-     * Add an Event into the taskList
+     * Add an Event into the taskList.
      *
-     * @param commandArgs String input from user
+     * @param commandArgs String input from user.
      * @throws DukeInputException If the user leaves the description empty or omits the /at separator.
      */
     public static void addEvent(String commandArgs) throws DukeInputException {
@@ -107,11 +117,11 @@ public class TaskList {
     }
 
     /**
-     * Set a valid task's status
+     * Set a valid task's status.
      *
-     * @param itemNum Integer index provided by user
-     * @param isDone boolean for the Task
-     * @throws DukeInputException If the index provided is out of the ArrayList's size
+     * @param itemNum Integer index provided by user.
+     * @param isDone boolean for the Task.
+     * @throws DukeInputException If the index provided is out of the ArrayList's size.
      */
     public static void setTaskStatus(int itemNum, boolean isDone) throws DukeInputException {
         if (itemNum > 0 && itemNum <= taskList.size()) {
@@ -127,10 +137,10 @@ public class TaskList {
     }
 
     /**
-     * Delete a valid Task from the taskList
+     * Delete a valid Task from the taskList.
      *
-     * @param itemNum Integer index provided by user
-     * @throws DukeInputException If the index provided is out of the ArrayList's size
+     * @param itemNum Integer index provided by user.
+     * @throws DukeInputException If the index provided is out of the ArrayList's size.
      */
     public static void deleteTask(int itemNum) throws DukeInputException {
         if (itemNum > 0 && itemNum <= taskList.size()) {
@@ -144,6 +154,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns an ArrayList of tasks containing tasks occurring on a given LocalDate.
+     *
+     * @param date LocalDate containing the date to be matched.
+     * @return ArrayList of tasks containing tasks occurring on a given LocalDate.
+     */
     public static ArrayList<Task> tasksOnDate(LocalDate date) {
         ArrayList<Task> resultList = new ArrayList<>();
 

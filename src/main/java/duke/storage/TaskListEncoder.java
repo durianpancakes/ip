@@ -8,6 +8,12 @@ import duke.data.task.Todo;
 import java.util.ArrayList;
 
 public class TaskListEncoder {
+    /**
+     * Returns an ArrayList of strings representation of an ArrayList of tasks.
+     *
+     * @param taskList ArrayList of tasks.
+     * @return ArrayList of strings containing the encoded Strings of Tasks.
+     */
     public static ArrayList<String> encodeTaskList(ArrayList<Task> taskList) {
         final ArrayList<String> encodedTasks = new ArrayList<>();
 
@@ -17,6 +23,12 @@ public class TaskListEncoder {
         return encodedTasks;
     }
 
+    /**
+     * Returns an encoded String representation of a Task.
+     *
+     * @param task from the ArrayList
+     * @return String converted from Task.
+     */
     private static String encodeTaskToString(Task task) {
         if (task instanceof Todo) {
             Todo todo = (Todo) task;
