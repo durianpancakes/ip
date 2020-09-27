@@ -14,11 +14,11 @@ public class Duke {
     public static void main (String[] args) {
         boolean exitFlag = false;
         UserInterface ui = new UserInterface();
-        new Storage();
+        Storage storage = new Storage();
         try {
-            TaskList taskList = new TaskList(Storage.load());
+            new TaskList(storage.load("/tasks.txt"));
         } catch (DukeInitializeException e) {
-            UserInterface.printInitError();
+            ui.printInitError();
         }
 
         ui.printWelcomeMessage();

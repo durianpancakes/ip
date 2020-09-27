@@ -13,7 +13,7 @@ public class TaskListDecoder {
      * @param encodedTaskList ArrayList of strings.
      * @return ArrayList of tasks containing the decoded Tasks.
      */
-    public static ArrayList<Task> decodeTaskList (List<String> encodedTaskList) {
+    public ArrayList<Task> decodeTaskList (List<String> encodedTaskList) {
         final ArrayList<Task> decodedTasks = new ArrayList<>();
         for (String encodedTask : encodedTaskList) {
             decodedTasks.add(decodeTaskFromString(encodedTask));
@@ -27,7 +27,9 @@ public class TaskListDecoder {
      * @param encodedTask encoded String of a Task.
      * @return Task converted from String.
      */
-    private static Task decodeTaskFromString (String encodedTask) {
-        return Parser.parseTaskFromString(encodedTask);
+    private Task decodeTaskFromString (String encodedTask) {
+        Parser parser = new Parser();
+
+        return parser.parseTaskFromString(encodedTask);
     }
 }

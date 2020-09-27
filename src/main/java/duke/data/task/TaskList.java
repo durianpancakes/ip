@@ -9,37 +9,35 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static duke.parser.Parser.parseEventInput;
-
 public class TaskList {
-    private static final TaskList INSTANCE = null;
     private static ArrayList<Task> taskList;
 
     public TaskList () {
-        taskList = new ArrayList<>();
     }
 
-    public TaskList (ArrayList<Task> taskList) {
-        TaskList.taskList = taskList;
+    public TaskList (ArrayList<Task> inputTaskList) {
+        taskList = inputTaskList;
     }
 
     /**
      * Prints the taskList using the UserInterface.printTaskList(...) method.
      */
-    public static void list () {
-        UserInterface.printTaskList(taskList);
+    public void list () {
+        UserInterface userInterface = new UserInterface();
+        userInterface.printTaskList(taskList);
     }
 
     /**
-     * Writes the taskList into data.txt.
+     * Writes the taskList into tasks.txt.
      */
-    public static void save () {
+    public void save () {
         Storage storage = new Storage();
+        UserInterface userInterface = new UserInterface();
         try {
-            storage.save(taskList);
-            UserInterface.printSaveSuccess();
+            storage.save(taskList, "/tasks.txt");
+            userInterface.printSaveSuccess();
         } catch (IOException e) {
-            UserInterface.printSaveError();
+            userInterface.printSaveError();
         }
     }
 
@@ -49,7 +47,7 @@ public class TaskList {
      * @param keyword String containing the keyword given by the user.
      * @return ArrayList of tasks containing tasks that matches the keyword.
      */
-    public static ArrayList<Task> findTasks (String keyword) {
+    public ArrayList<Task> findTasks (String keyword) {
         ArrayList<Task> resultList = new ArrayList<>();
         for (Task task : taskList) {
             if (task.getDescription().contains(keyword)) {
@@ -65,14 +63,15 @@ public class TaskList {
      * @param commandArgs String input from user.
      * @throws DukeInputException If the user leaves the description empty.
      */
-    public static void addTodo (String commandArgs) throws DukeInputException {
+    public void addTodo (String commandArgs) throws DukeInputException {
+        UserInterface userInterface = new UserInterface();
         if (commandArgs.equals("")) {
             throw new DukeInputException();
         }
         Todo todo = new Todo(commandArgs);
         taskList.add(todo);
         save();
-        UserInterface.printAddSuccessMsg(todo, taskList.size());
+        userInterface.printAddSuccessMsg(todo, taskList.size());
     }
 
 
@@ -82,17 +81,19 @@ public class TaskList {
      * @param commandArgs String input from the user.
      * @throws DukeInputException If the user leaves the description empty or omits the /by separator.
      */
-    public static void addDeadline (String commandArgs) throws DukeInputException {
+    public void addDeadline (String commandArgs) throws DukeInputException {
+        UserInterface userInterface = new UserInterface();
         if (commandArgs.equals("")) {
             throw new DukeInputException();
         }
         try {
-            Deadline deadline = Parser.parseDeadlineInput(commandArgs);
+            Parser parser = new Parser();
+            Deadline deadline = parser.parseDeadlineInput(commandArgs);
             taskList.add(deadline);
             save();
-            UserInterface.printAddSuccessMsg(deadline, taskList.size());
+            userInterface.printAddSuccessMsg(deadline, taskList.size());
         } catch (StringIndexOutOfBoundsException e) {
-            UserInterface.printToUser("Did you forget /by?");
+            userInterface.printToUser("Did you forget /by?");
         }
     }
 
@@ -102,17 +103,19 @@ public class TaskList {
      * @param commandArgs String input from user.
      * @throws DukeInputException If the user leaves the description empty or omits the /at separator.
      */
-    public static void addEvent (String commandArgs) throws DukeInputException {
+    public void addEvent (String commandArgs) throws DukeInputException {
+        UserInterface userInterface = new UserInterface();
         if (commandArgs.equals("")) {
             throw new DukeInputException();
         }
         try {
-            Event event = parseEventInput(commandArgs);
+            Parser parser = new Parser();
+            Event event = parser.parseEventInput(commandArgs);
             taskList.add(event);
             save();
-            UserInterface.printAddSuccessMsg(event, taskList.size());
+            userInterface.printAddSuccessMsg(event, taskList.size());
         } catch (StringIndexOutOfBoundsException e) {
-            UserInterface.printToUser("Did you forget /at?");
+            userInterface.printToUser("Did you forget /at?");
         }
     }
 
@@ -123,15 +126,17 @@ public class TaskList {
      * @param isDone  boolean for the Task.
      * @throws DukeInputException If the index provided is out of the ArrayList's size.
      */
-    public static void setTaskStatus (int itemNum, boolean isDone) throws DukeInputException {
+    public void setTaskStatus (int itemNum, boolean isDone) throws DukeInputException {
+        UserInterface userInterface = new UserInterface();
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
             Task task = taskList.get(itemIdx);
 
             task.setDone(isDone);
-
-            UserInterface.printSetTaskMsg(task);
+            save();
+            userInterface.printSetTaskMsg(task);
         } else {
+            userInterface.printIndexErrorMessage();
             throw new DukeInputException();
         }
     }
@@ -142,14 +147,17 @@ public class TaskList {
      * @param itemNum Integer index provided by user.
      * @throws DukeInputException If the index provided is out of the ArrayList's size.
      */
-    public static void deleteTask (int itemNum) throws DukeInputException {
+    public void deleteTask (int itemNum) throws DukeInputException {
+        UserInterface userInterface = new UserInterface();
+
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
             Task task = taskList.get(itemIdx);
             taskList.remove(itemIdx);
-
-            UserInterface.printDeleteSuccessMsg(task, taskList.size());
+            save();
+            userInterface.printDeleteSuccessMsg(task, taskList.size());
         } else {
+            userInterface.printIndexErrorMessage();
             throw new DukeInputException();
         }
     }
@@ -160,7 +168,7 @@ public class TaskList {
      * @param date LocalDate containing the date to be matched.
      * @return ArrayList of tasks containing tasks occurring on a given LocalDate.
      */
-    public static ArrayList<Task> tasksOnDate (LocalDate date) {
+    public ArrayList<Task> tasksOnDate (LocalDate date) {
         ArrayList<Task> resultList = new ArrayList<>();
 
         for (Task task : taskList) {
