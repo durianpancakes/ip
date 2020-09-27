@@ -17,18 +17,18 @@ public class Parser {
      * @param encodedTask String from data.txt.
      * @return Task
      */
-    public static Task parseTaskFromString(String encodedTask) {
+    public static Task parseTaskFromString (String encodedTask) {
         final String[] data = encodedTask.trim().split("\\|", 3);
 
-        switch(data[0]) {
-        case "[T]":
-            return parseTodo(data);
-        case "[D]":
-            return parseDeadline(data);
-        case "[E]":
-            return parseEvent(data);
-        default:
-            return null;
+        switch (data[0]) {
+            case "[T]":
+                return parseTodo(data);
+            case "[D]":
+                return parseDeadline(data);
+            case "[E]":
+                return parseEvent(data);
+            default:
+                return null;
         }
     }
 
@@ -39,12 +39,12 @@ public class Parser {
      * @return Deadline.
      * @throws DukeInputException If user leaves /by of Deadline empty, or when date input of /by is invalid.
      */
-    public static Deadline parseDeadlineInput(String commandArgs) throws DukeInputException {
+    public static Deadline parseDeadlineInput (String commandArgs) throws DukeInputException {
         final String matchByPrefix = "/by";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String byString = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
-        if(byString.equals("")) {
+        if (byString.equals("")) {
             UserInterface.printToUser("ERROR: Deadline by cannot be empty!");
             throw new DukeInputException();
         }
@@ -65,12 +65,12 @@ public class Parser {
      * @return Event.
      * @throws DukeInputException If user leaves /at of Event empty.
      */
-    public static Event parseEventInput(String commandArgs) throws DukeInputException {
+    public static Event parseEventInput (String commandArgs) throws DukeInputException {
         final String matchByPrefix = "/at";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String at = commandArgs.substring(indexOfByPrefix).replace(matchByPrefix, "").trim();
-        if(at.equals("")) {
+        if (at.equals("")) {
             UserInterface.printToUser("ERROR: Event at cannot be empty!");
             throw new DukeInputException();
         }
@@ -87,7 +87,7 @@ public class Parser {
         return new Event(description, atStart, atEnd);
     }
 
-    private static LocalDateTime parseLocalDateTime(String localDateTimeString) {
+    private static LocalDateTime parseLocalDateTime (String localDateTimeString) {
         System.out.println(localDateTimeString);
         return LocalDateTime.parse(localDateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
     }
@@ -98,7 +98,7 @@ public class Parser {
      * @param data String array containing Todo data.
      * @return Todo.
      */
-    private static Todo parseTodo(String[] data) {
+    private static Todo parseTodo (String[] data) {
         boolean isDone;
         String description;
         isDone = Boolean.parseBoolean(data[1]);
@@ -113,7 +113,7 @@ public class Parser {
      * @param data String array containing Event data.
      * @return Event.
      */
-    private static Event parseEvent(String[] data) {
+    private static Event parseEvent (String[] data) {
         boolean isDone;
         String description;
         isDone = Boolean.parseBoolean(data[1]);
@@ -131,7 +131,7 @@ public class Parser {
      * @param data String array containing Deadline data.
      * @return Deadline.
      */
-    private static Deadline parseDeadline(String[] data) {
+    private static Deadline parseDeadline (String[] data) {
         boolean isDone;
         String description;
         isDone = Boolean.parseBoolean(data[1]);
@@ -148,80 +148,80 @@ public class Parser {
      * @return boolean exitFlag.
      * @throws DukeInputException If input from user is invalid.
      */
-    public static boolean parseCommand(String userInput) throws DukeInputException {
+    public static boolean parseCommand (String userInput) throws DukeInputException {
         final String[] split = userInput.trim().split("\\s+", 2);
-        final String[] commandTypeAndParams = split.length == 2 ? split : new String[]{split[0], ""};
+        final String[] commandTypeAndParams = split.length == 2 ? split : new String[] {split[0], ""};
         final String commandType = commandTypeAndParams[0];
         final String commandArgs = commandTypeAndParams[1];
 
-        switch(commandType) {
-        case "bye":
-            TaskList.save();
-            return true;
-        case "list":
-            if(!commandArgs.isEmpty()) {
+        switch (commandType) {
+            case "bye":
+                TaskList.save();
+                return true;
+            case "list":
+                if (!commandArgs.isEmpty()) {
+                    try {
+                        UserInterface.printTaskList(TaskList.tasksOnDate(LocalDate.parse(commandArgs)));
+                    } catch (DateTimeParseException e) {
+                        UserInterface.printToUser("ERROR: Invalid date given!");
+                        throw new DukeInputException();
+                    }
+                } else {
+                    TaskList.list();
+                }
+                break;
+            case "done":
+                if (!commandArgs.isEmpty()) {
+                    try {
+                        int itemNum = Integer.parseInt(commandArgs);
+                        TaskList.setTaskStatus(itemNum, true);
+                    } catch (NumberFormatException e) {
+                        throw new DukeInputException();
+                    }
+                }
+                break;
+            case "todo":
                 try {
-                    UserInterface.printTaskList(TaskList.tasksOnDate(LocalDate.parse(commandArgs)));
-                } catch (DateTimeParseException e) {
-                    UserInterface.printToUser("ERROR: Invalid date given!");
+                    TaskList.addTodo(commandArgs);
+                    return false;
+                } catch (DukeInputException e) {
+                    UserInterface.printAddError();
+                }
+                break;
+            case "event":
+                try {
+                    TaskList.addEvent(commandArgs);
+                } catch (DukeInputException e) {
+                    UserInterface.printAddError();
+                }
+                break;
+            case "deadline":
+                try {
+                    TaskList.addDeadline(commandArgs);
+                } catch (DukeInputException e) {
+                    UserInterface.printAddError();
+                }
+                break;
+            case "delete":
+                if (!commandArgs.isEmpty()) {
+                    try {
+                        int itemNum = Integer.parseInt(commandArgs);
+                        TaskList.deleteTask(itemNum);
+                    } catch (NumberFormatException e) {
+                        throw new DukeInputException();
+                    }
+                }
+                break;
+            case "find":
+                if (!commandArgs.isEmpty()) {
+                    UserInterface.printTaskList(TaskList.findTasks(commandArgs));
+                } else {
+                    UserInterface.printToUser("ERROR: You need to give me a keyword to find!");
                     throw new DukeInputException();
                 }
-            } else {
-                TaskList.list();
-            }
-            break;
-        case "done":
-            if(!commandArgs.isEmpty()) {
-                try {
-                    int itemNum = Integer.parseInt(commandArgs);
-                    TaskList.setTaskStatus(itemNum, true);
-                } catch (NumberFormatException e){
-                    throw new DukeInputException();
-                }
-            }
-            break;
-        case "todo":
-            try {
-                TaskList.addTodo(commandArgs);
-                return false;
-            } catch (DukeInputException e) {
-                UserInterface.printAddError();
-            }
-            break;
-        case "event":
-            try {
-                TaskList.addEvent(commandArgs);
-            } catch (DukeInputException e) {
-                UserInterface.printAddError();
-            }
-            break;
-        case "deadline":
-            try {
-                TaskList.addDeadline(commandArgs);
-            } catch (DukeInputException e) {
-                UserInterface.printAddError();
-            }
-            break;
-        case "delete":
-            if(!commandArgs.isEmpty()) {
-                try {
-                    int itemNum = Integer.parseInt(commandArgs);
-                    TaskList.deleteTask(itemNum);
-                } catch (NumberFormatException e){
-                    throw new DukeInputException();
-                }
-            }
-            break;
-        case "find":
-            if(!commandArgs.isEmpty()) {
-                UserInterface.printTaskList(TaskList.findTasks(commandArgs));
-            } else {
-                UserInterface.printToUser("ERROR: You need to give me a keyword to find!");
+                break;
+            default:
                 throw new DukeInputException();
-            }
-            break;
-        default:
-            throw new DukeInputException();
         }
         return false;
     }

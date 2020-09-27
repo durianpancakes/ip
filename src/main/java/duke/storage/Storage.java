@@ -21,20 +21,20 @@ public class Storage {
      *
      * @return ArrayList containing Tasks from Duke's storage.
      * @throws DukeInitializeException If the data directory doesn't exist, or when the creation
-     * of tasks.txt fails.
+     *                                 of tasks.txt fails.
      */
-    public static ArrayList<Task> load() throws DukeInitializeException {
-        if(Files.exists(Path.of(DIRECTORY_PATH))){
+    public static ArrayList<Task> load () throws DukeInitializeException {
+        if (Files.exists(Path.of(DIRECTORY_PATH))) {
             // Data directory exists
             File file = new File(FILE_PATH);
             ArrayList<String> data = new ArrayList<>();
             try {
                 Scanner sc = new Scanner(file);
-                while(sc.hasNext()) {
+                while (sc.hasNext()) {
                     String dataString = sc.nextLine();
                     data.add(dataString);
                 }
-            } catch (IOException e){
+            } catch (IOException e) {
                 throw new DukeInitializeException();
             }
 
@@ -55,10 +55,10 @@ public class Storage {
      *
      * @throws IOException If the creation of the .txt file fails.
      */
-    private static void createDataFile() throws IOException {
+    private static void createDataFile () throws IOException {
         File file = new File(Storage.DIRECTORY_PATH);
         boolean dirCreated = file.mkdir();
-        if(dirCreated) {
+        if (dirCreated) {
             file = new File(Storage.DIRECTORY_PATH + "/tasks.txt");
             file.createNewFile();
         }
@@ -70,7 +70,7 @@ public class Storage {
      * @param taskList ArrayList of tasks to be saved.
      * @throws IOException If there is an error while writing to Duke's storage.
      */
-    public void save(ArrayList<Task> taskList) throws IOException {
+    public void save (ArrayList<Task> taskList) throws IOException {
         List<String> encodedTaskList = TaskListEncoder.encodeTaskList(taskList);
         Files.write(Path.of(FILE_PATH), encodedTaskList);
     }

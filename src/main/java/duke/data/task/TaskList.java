@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import static duke.parser.Parser.parseEventInput;
 
 public class TaskList {
-    private static TaskList INSTANCE = null;
+    private static final TaskList INSTANCE = null;
     private static ArrayList<Task> taskList;
 
     public TaskList () {
@@ -26,14 +26,14 @@ public class TaskList {
     /**
      * Prints the taskList using the UserInterface.printTaskList(...) method.
      */
-    public static void list() {
+    public static void list () {
         UserInterface.printTaskList(taskList);
     }
 
     /**
      * Writes the taskList into data.txt.
      */
-    public static void save() {
+    public static void save () {
         Storage storage = new Storage();
         try {
             storage.save(taskList);
@@ -49,10 +49,10 @@ public class TaskList {
      * @param keyword String containing the keyword given by the user.
      * @return ArrayList of tasks containing tasks that matches the keyword.
      */
-    public static ArrayList<Task> findTasks(String keyword) {
+    public static ArrayList<Task> findTasks (String keyword) {
         ArrayList<Task> resultList = new ArrayList<>();
-        for(Task task : taskList) {
-            if(task.getDescription().contains(keyword)) {
+        for (Task task : taskList) {
+            if (task.getDescription().contains(keyword)) {
                 resultList.add(task);
             }
         }
@@ -65,8 +65,8 @@ public class TaskList {
      * @param commandArgs String input from user.
      * @throws DukeInputException If the user leaves the description empty.
      */
-    public static void addTodo(String commandArgs) throws DukeInputException {
-        if(commandArgs.equals("")){
+    public static void addTodo (String commandArgs) throws DukeInputException {
+        if (commandArgs.equals("")) {
             throw new DukeInputException();
         }
         Todo todo = new Todo(commandArgs);
@@ -82,8 +82,8 @@ public class TaskList {
      * @param commandArgs String input from the user.
      * @throws DukeInputException If the user leaves the description empty or omits the /by separator.
      */
-    public static void addDeadline(String commandArgs) throws DukeInputException {
-        if(commandArgs.equals("")){
+    public static void addDeadline (String commandArgs) throws DukeInputException {
+        if (commandArgs.equals("")) {
             throw new DukeInputException();
         }
         try {
@@ -102,8 +102,8 @@ public class TaskList {
      * @param commandArgs String input from user.
      * @throws DukeInputException If the user leaves the description empty or omits the /at separator.
      */
-    public static void addEvent(String commandArgs) throws DukeInputException {
-        if(commandArgs.equals("")){
+    public static void addEvent (String commandArgs) throws DukeInputException {
+        if (commandArgs.equals("")) {
             throw new DukeInputException();
         }
         try {
@@ -120,10 +120,10 @@ public class TaskList {
      * Set a valid task's status.
      *
      * @param itemNum Integer index provided by user.
-     * @param isDone boolean for the Task.
+     * @param isDone  boolean for the Task.
      * @throws DukeInputException If the index provided is out of the ArrayList's size.
      */
-    public static void setTaskStatus(int itemNum, boolean isDone) throws DukeInputException {
+    public static void setTaskStatus (int itemNum, boolean isDone) throws DukeInputException {
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
             Task task = taskList.get(itemIdx);
@@ -142,7 +142,7 @@ public class TaskList {
      * @param itemNum Integer index provided by user.
      * @throws DukeInputException If the index provided is out of the ArrayList's size.
      */
-    public static void deleteTask(int itemNum) throws DukeInputException {
+    public static void deleteTask (int itemNum) throws DukeInputException {
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
             Task task = taskList.get(itemIdx);
@@ -160,17 +160,17 @@ public class TaskList {
      * @param date LocalDate containing the date to be matched.
      * @return ArrayList of tasks containing tasks occurring on a given LocalDate.
      */
-    public static ArrayList<Task> tasksOnDate(LocalDate date) {
+    public static ArrayList<Task> tasksOnDate (LocalDate date) {
         ArrayList<Task> resultList = new ArrayList<>();
 
-        for(Task task : taskList) {
-            if(task instanceof Deadline) {
+        for (Task task : taskList) {
+            if (task instanceof Deadline) {
                 LocalDate deadlineDate = ((Deadline) task).getBy().toLocalDate();
                 if (deadlineDate.isEqual(date)) {
                     resultList.add(task);
                 }
             }
-            if(task instanceof Event) {
+            if (task instanceof Event) {
                 LocalDate eventDate = ((Event) task).getAtStart().toLocalDate();
                 if (eventDate.isEqual(date)) {
                     resultList.add(task);

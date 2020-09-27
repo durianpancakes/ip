@@ -19,7 +19,7 @@ public class Task {
      *
      * @return String containing the description of the Task.
      */
-    public String getDescription() {
+    public String getDescription () {
         return description;
     }
 
@@ -28,7 +28,7 @@ public class Task {
      *
      * @param description String containing the description of the Task.
      */
-    public void setDescription(String description) {
+    public void setDescription (String description) {
         this.description = description;
     }
 
@@ -37,7 +37,7 @@ public class Task {
      *
      * @return Boolean of the done status of the Task.
      */
-    public boolean getDone() {
+    public boolean getDone () {
         return isDone;
     }
 
@@ -46,7 +46,7 @@ public class Task {
      *
      * @param isDone Boolean of the done status intended for the Task.
      */
-    public void setDone(boolean isDone){
+    public void setDone (boolean isDone) {
         this.isDone = isDone;
     }
 
@@ -55,7 +55,7 @@ public class Task {
      *
      * @return String containing the status icon.
      */
-    public String getStatusIcon(){
+    public String getStatusIcon () {
         return "[" + (isDone ? "\u2713" : "\u2718") + "]";
     }
 
@@ -64,7 +64,7 @@ public class Task {
      *
      * @return String containing the type icon of the Task.
      */
-    public String getTypeIcon() {
+    public String getTypeIcon () {
         return null;
     }
 
@@ -74,7 +74,7 @@ public class Task {
      * @return String containing the representation of a Task.
      */
     @Override
-    public String toString(){
+    public String toString () {
         return getTypeIcon() + getStatusIcon() + description;
     }
 }

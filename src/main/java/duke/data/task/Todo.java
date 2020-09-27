@@ -6,7 +6,7 @@ public class Todo extends Task {
      *
      * @param taskTitle String containing the description of the Todo.
      */
-    public Todo(String taskTitle) {
+    public Todo (String taskTitle) {
         super(taskTitle);
     }
 
@@ -14,9 +14,9 @@ public class Todo extends Task {
      * Constructs a Todo with a specified done status.
      *
      * @param taskTitle String containing the description of the Todo.
-     * @param isDone boolean containing the done status of the Todo.
+     * @param isDone    boolean containing the done status of the Todo.
      */
-    public Todo(String taskTitle, boolean isDone) {
+    public Todo (String taskTitle, boolean isDone) {
         super(taskTitle);
         this.isDone = isDone;
     }
@@ -27,7 +27,7 @@ public class Todo extends Task {
      * @return String containing the type icon of the Todo.
      */
     @Override
-    public String getTypeIcon(){
+    public String getTypeIcon () {
         return "[T]";
     }
 
@@ -37,7 +37,7 @@ public class Todo extends Task {
      * @return String containing the representation of a Todo.
      */
     @Override
-    public String toString(){
+    public String toString () {
         return super.toString();
     }
 }

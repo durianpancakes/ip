@@ -1,7 +1,6 @@
 package duke.storage;
 
 import duke.data.task.Task;
-import duke.data.task.TaskList;
 import duke.parser.Parser;
 
 import java.util.ArrayList;
@@ -14,9 +13,9 @@ public class TaskListDecoder {
      * @param encodedTaskList ArrayList of strings.
      * @return ArrayList of tasks containing the decoded Tasks.
      */
-    public static ArrayList<Task> decodeTaskList(List<String> encodedTaskList) {
+    public static ArrayList<Task> decodeTaskList (List<String> encodedTaskList) {
         final ArrayList<Task> decodedTasks = new ArrayList<>();
-        for(String encodedTask : encodedTaskList) {
+        for (String encodedTask : encodedTaskList) {
             decodedTasks.add(decodeTaskFromString(encodedTask));
         }
         return decodedTasks;

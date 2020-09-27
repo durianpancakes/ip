@@ -11,7 +11,7 @@ public class Duke {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main (String[] args) {
         boolean exitFlag = false;
         UserInterface ui = new UserInterface();
         new Storage();
@@ -23,7 +23,7 @@ public class Duke {
 
         ui.printWelcomeMessage();
 
-        while(!exitFlag) {
+        while (!exitFlag) {
             exitFlag = ui.getUserCommand();
         }
 

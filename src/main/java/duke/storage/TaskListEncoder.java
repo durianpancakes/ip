@@ -14,10 +14,10 @@ public class TaskListEncoder {
      * @param taskList ArrayList of tasks.
      * @return ArrayList of strings containing the encoded Strings of Tasks.
      */
-    public static ArrayList<String> encodeTaskList(ArrayList<Task> taskList) {
+    public static ArrayList<String> encodeTaskList (ArrayList<Task> taskList) {
         final ArrayList<String> encodedTasks = new ArrayList<>();
 
-        for(Task task : taskList) {
+        for (Task task : taskList) {
             encodedTasks.add(encodeTaskToString(task));
         }
         return encodedTasks;
@@ -29,7 +29,7 @@ public class TaskListEncoder {
      * @param task from the ArrayList
      * @return String converted from Task.
      */
-    private static String encodeTaskToString(Task task) {
+    private static String encodeTaskToString (Task task) {
         if (task instanceof Todo) {
             Todo todo = (Todo) task;
             return todo.getTypeIcon() + "|" + todo.getDone() + "|"

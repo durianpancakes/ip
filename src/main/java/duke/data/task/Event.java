@@ -11,10 +11,10 @@ public class Event extends Task {
      * Constructs an Event that is not done.
      *
      * @param description String containing the description of the Event.
-     * @param start LocalDateTime start time of the Event.
-     * @param end LocalDateTime end time of the Event.
+     * @param start       LocalDateTime start time of the Event.
+     * @param end         LocalDateTime end time of the Event.
      */
-    public Event(String description, LocalDateTime start, LocalDateTime end) {
+    public Event (String description, LocalDateTime start, LocalDateTime end) {
         super(description);
         this.atStart = start;
         this.atEnd = end;
@@ -24,11 +24,11 @@ public class Event extends Task {
      * Constructs an Event with a specified done status.
      *
      * @param description String containing the description of the Event.
-     * @param start LocalDateTime start time of the Event.
-     * @param end LocalDateTime end time of the Event.
-     * @param isDone Boolean containing the done status of the Event.
+     * @param start       LocalDateTime start time of the Event.
+     * @param end         LocalDateTime end time of the Event.
+     * @param isDone      Boolean containing the done status of the Event.
      */
-    public Event(String description, LocalDateTime start, LocalDateTime end, boolean isDone) {
+    public Event (String description, LocalDateTime start, LocalDateTime end, boolean isDone) {
         super(description);
         this.atStart = start;
         this.atEnd = end;
@@ -40,7 +40,7 @@ public class Event extends Task {
      *
      * @return LocalDateTime containing the start time of the Event.
      */
-    public LocalDateTime getAtStart() {
+    public LocalDateTime getAtStart () {
         return atStart;
     }
 
@@ -49,7 +49,7 @@ public class Event extends Task {
      *
      * @return LocalDateTime containing the end time of the Event.
      */
-    public LocalDateTime getAtEnd() {
+    public LocalDateTime getAtEnd () {
         return atEnd;
     }
 
@@ -59,7 +59,7 @@ public class Event extends Task {
      * @return String containing the Type Icon of an Event.
      */
     @Override
-    public String getTypeIcon(){
+    public String getTypeIcon () {
         return "[E]";
     }
 
@@ -69,7 +69,7 @@ public class Event extends Task {
      * @return String representation of the Event.
      */
     @Override
-    public String toString(){
+    public String toString () {
         return super.toString() + " (at: "
                 + atStart.format(DateTimeFormatter.ofPattern("MMM d yyyy hh:mm a"))
                 + " to "
