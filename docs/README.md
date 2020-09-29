@@ -26,11 +26,13 @@ Prerequisites: JDK 11, update Intellij to the most recent version.
 ## Features
 
 ### Viewing help: `help`
+
 Shows a message containing all possible commands accepted by Duke
 
 Format: `help`
 
 ### Adding a Todo: `todo`
+
 Adds a Todo to the task list
 
 Format: `todo DESCRIPTION`
@@ -44,6 +46,7 @@ Expected outcome:
 * `Added successfully: [T][✘]take dog out for a run`
 
 ### Adding a Deadline: `deadline`
+
 Adds a Deadline to the task list
 
 Format: `deadline DESCRIPTION /by DATE_TIME<yyyy-MM-dd HHmm>`
@@ -55,6 +58,7 @@ Expected outcome:
 * `Added successfully: [D][✘]Finish homework (by: Sep 21 2020 06:00 PM)`
 
 ### Adding an Event: `event`
+
 Adds an Event to the task list
 
 Format: `event DESCRIPTION /at FROM_DATE_TIME<yyyy-MM-dd HHmm> /to TO_DATE_TIME<yyyy-MM-dd HHmm>`
@@ -76,6 +80,7 @@ Expected outcome:
   `2. [E][✘]Math exam (at: Oct 22 2020 09:00 AM to Oct 22 2020 10:00 AM)`
 
 ### Listing all tasks on a given day: `list`
+
 Shows a list of all tasks happening on a given day in the task list
 
 Format: `list DATE`
@@ -90,6 +95,7 @@ Expected outcomes:
   `1. [D][✘]Finish homework (by: Sep 21 2020 06:00 PM)`  
   
 ### Locating tasks by name: `find`
+
 Find tasks whose name contain any of the given keywords.
 
 Format: `find KEYWORD`
@@ -104,6 +110,7 @@ Expected outcomes:
   `1. [D][✘]Finish homework (by: Sep 21 2020 06:00 PM)`
 
 ### Deleting a task: `delete`
+
 Delete the task of a given index
 
 Format: `delete INDEX`
@@ -118,6 +125,7 @@ Expected outcomes:
 * `Did you give me the wrong task number?` (because the index given is out of bounds)
 
 ### Editing a task's done status: `done`
+
 Changes a task's done status to done
 
 Format: `done INDEX`
@@ -132,6 +140,7 @@ Expected outcomes:
 * `Did you give me the wrong task number?` (because the index given is out of bounds)
 
 ### Exiting the program: `bye`
+
 Exits the program
 
 Format: `bye`
@@ -141,9 +150,11 @@ Expected outcome:
   `Bye! See you again soon :)`
 
 ### Saving the data
+
 Duke saves all data automatically after any command that changes the data. There is no need to save manually.
 
 ## Command summary
+
 Action | Format, Examples
 -------|-----------------
 help|`help`
