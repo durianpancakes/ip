@@ -48,14 +48,14 @@ public class Parser {
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String byString = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
         if (byString.equals("")) {
-            userInterface.printToUser("ERROR: Deadline by cannot be empty!");
+            userInterface.printIncompleteDeadlineError();
             throw new DukeInputException();
         }
         LocalDateTime by;
         try {
             by = parseLocalDateTime(byString);
         } catch (DateTimeParseException e) {
-            userInterface.printToUser("ERROR: Date input is invalid!");
+            userInterface.printDateInputErrorMessage();
             throw new DukeInputException();
         }
         return new Deadline(description, by);
@@ -75,7 +75,7 @@ public class Parser {
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String at = commandArgs.substring(indexOfByPrefix).replace(matchByPrefix, "").trim();
         if (at.equals("")) {
-            userInterface.printToUser("ERROR: Event at cannot be empty!");
+            userInterface.printIncompleteEventError();
             throw new DukeInputException();
         }
         LocalDateTime atStart, atEnd;
@@ -85,7 +85,7 @@ public class Parser {
             atStart = parseLocalDateTime(startString[0].trim());
             atEnd = parseLocalDateTime(startString[1].trim());
         } catch (DateTimeParseException e) {
-            userInterface.printToUser("ERROR: Date input is invalid!");
+            userInterface.printDateInputErrorMessage();
             throw new DukeInputException();
         }
         return new Event(description, atStart, atEnd);

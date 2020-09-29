@@ -18,10 +18,19 @@ public class UserInterface {
     private static Scanner in = null;
     private static PrintStream out = null;
 
+    /**
+     * Default constructor for a UserInterface
+     */
     public UserInterface () {
         this(System.in, System.out);
     }
 
+    /**
+     * Constructor for a UserInterface given an InputStream and PrintStream
+     *
+     * @param in InputStream
+     * @param out PrintStream
+     */
     public UserInterface (InputStream in, PrintStream out) {
         UserInterface.in = new Scanner(in);
         UserInterface.out = out;
@@ -30,8 +39,8 @@ public class UserInterface {
     /**
      * Displays a message upon successful adding of a Task into the taskList
      *
-     * @param task
-     * @param totalTasks
+     * @param task Task added
+     * @param totalTasks Number of tasks in the taskList after the addition of the Task
      */
     public void printAddSuccessMsg (Task task, int totalTasks) {
         TaskList taskList = new TaskList();
@@ -159,13 +168,29 @@ public class UserInterface {
     }
 
     /**
-     * Displays an error message upon failed initialization.
+     * Displays a message to the user
+     *
+     * @param string
      */
-    public void printInitError () {
-        printToUser(DIVIDER);
-        printToUser(Messages.MESSAGE_INIT_FAILED);
-        printToUser(DIVIDER);
+    public void printToUser (String string) {
+        out.println(string);
     }
+
+    /**
+     * Displays a message upon the successful saving of the taskList.
+     */
+    public void printSaveSuccess () {
+        printToUser(Messages.MESSAGE_SAVE_SUCCESSFUL);
+    }
+
+    /**
+     * Displays a farewell message upon exit of Duke
+     */
+    public void printByeMessage () {
+        printToUser(Messages.MESSAGE_GOODBYE);
+    }
+
+    // ERRORS:
 
     /**
      * Displays an error message upon an invalid input while adding a Task.
@@ -174,22 +199,6 @@ public class UserInterface {
         printToUser(DIVIDER);
         printToUser(Messages.MESSAGE_INCOMPLETE_INPUT);
         printToUser(DIVIDER);
-    }
-
-    /**
-     * Displays a message to the user
-     *
-     * @param string
-     */
-    public void printToUser (String string) {
-        printToUser(string);
-    }
-
-    /**
-     * Displays a message upon the successful saving of the taskList.
-     */
-    public void printSaveSuccess () {
-        printToUser(Messages.MESSAGE_SAVE_SUCCESSFUL);
     }
 
     /**
@@ -202,16 +211,39 @@ public class UserInterface {
     }
 
     /**
-     * Displays a farewell message upon the user giving "Bye" command
-     */
-    public void printByeMessage () {
-        printToUser(Messages.MESSAGE_GOODBYE);
-    }
-
-    /**
-     * Displays an error message upon an invalid index given to Duke
+     * Displays an error message upon an invalid task index given
      */
     public void printIndexErrorMessage () {
         printToUser(Messages.MESSAGE_INVALID_INDEX);
+    }
+
+    /**
+     * Displays an error message upon an invalid data input given
+     */
+    public void printDateInputErrorMessage () {
+        printToUser(Messages.MESSAGE_INVALID_DATE);
+    }
+
+    /**
+     * Displays an error message upon an incomplete Event given
+     */
+    public void printIncompleteEventError () {
+        printToUser(Messages.MESSAGE_INCOMPLETE_EVENT);
+    }
+
+    /**
+     * Displays an error message upon an incomplete Deadline given
+     */
+    public void printIncompleteDeadlineError() {
+        printToUser(Messages.MESSAGE_INCOMPLETE_DEADLINE);
+    }
+
+    /**
+     * Displays an error message upon failed initialization.
+     */
+    public void printInitError () {
+        printToUser(DIVIDER);
+        printToUser(Messages.MESSAGE_INIT_FAILED);
+        printToUser(DIVIDER);
     }
 }

@@ -1,5 +1,8 @@
 package duke.data.task;
 
+/**
+ * Superclass of Deadline, Event and Todo
+ */
 public class Task {
     protected String description;
     protected boolean isDone;

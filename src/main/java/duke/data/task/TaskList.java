@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Contains all methods required for the management of a static ArrayList of Tasks.
+ */
 public class TaskList {
     private static ArrayList<Task> taskList;
 

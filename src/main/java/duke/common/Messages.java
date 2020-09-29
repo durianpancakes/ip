@@ -20,4 +20,7 @@ public class Messages {
     public static final String MESSAGE_INVALID_INPUT = "Sorry, I did not recognize that command";
     public static final String MESSAGE_INVALID_INDEX = "Did you give me the wrong task number?";
     public static final String MESSAGE_INCOMPLETE_INPUT = "Please check your input again!";
+    public static final String MESSAGE_INVALID_DATE = "ERROR: Date input is invalid!";
+    public static final String MESSAGE_INCOMPLETE_EVENT = "ERROR: Deadline by cannot be empty!";
+    public static final String MESSAGE_INCOMPLETE_DEADLINE = "ERROR: Event at cannot be empty!";
 }

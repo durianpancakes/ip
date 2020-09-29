@@ -1,5 +1,8 @@
 package duke.data.task;
 
+/**
+ * Subclass of Task
+ */
 public class Todo extends Task {
     /**
      * Constructs a Todo that is not done.
