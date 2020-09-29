@@ -201,10 +201,16 @@ public class UserInterface {
         printToUser(DIVIDER);
     }
 
+    /**
+     * Displays a farewell message upon the user giving "Bye" command
+     */
     public void printByeMessage () {
         printToUser(Messages.MESSAGE_GOODBYE);
     }
 
+    /**
+     * Displays an error message upon an invalid index given to Duke
+     */
     public void printIndexErrorMessage () {
         printToUser(Messages.MESSAGE_INVALID_INDEX);
     }
