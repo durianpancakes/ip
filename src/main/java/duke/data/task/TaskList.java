@@ -126,9 +126,8 @@ public class TaskList {
      *
      * @param itemNum Integer index provided by user.
      * @param isDone  boolean for the Task.
-     * @throws DukeInputException If the index provided is out of the ArrayList's size.
      */
-    public void setTaskStatus (int itemNum, boolean isDone) throws DukeInputException {
+    public void setTaskStatus (int itemNum, boolean isDone) {
         UserInterface userInterface = new UserInterface();
         if (itemNum > 0 && itemNum <= taskList.size()) {
             int itemIdx = itemNum - 1;
@@ -139,7 +138,6 @@ public class TaskList {
             userInterface.printSetTaskMsg(task);
         } else {
             userInterface.printIndexErrorMessage();
-            throw new DukeInputException();
         }
     }
 
@@ -147,9 +145,8 @@ public class TaskList {
      * Delete a valid Task from the taskList.
      *
      * @param itemNum Integer index provided by user.
-     * @throws DukeInputException If the index provided is out of the ArrayList's size.
      */
-    public void deleteTask (int itemNum) throws DukeInputException {
+    public void deleteTask (int itemNum) {
         UserInterface userInterface = new UserInterface();
 
         if (itemNum > 0 && itemNum <= taskList.size()) {
@@ -160,7 +157,6 @@ public class TaskList {
             userInterface.printDeleteSuccessMsg(task, taskList.size());
         } else {
             userInterface.printIndexErrorMessage();
-            throw new DukeInputException();
         }
     }
 

@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
-    private static final String DIVIDER = "---------------------------------------";
-    private static final String LINE_SEPARATOR = System.lineSeparator();
+    public static final String DIVIDER = "---------------------------------------";
+    public static final String LINE_SEPARATOR = System.lineSeparator();
 
     private static Scanner in = null;
     private static PrintStream out = null;
@@ -100,9 +100,9 @@ public class UserInterface {
      */
     public void printTaskList (ArrayList<Task> taskList) {
         if (taskList.isEmpty()) {
-            System.out.println("You have not added any tasks yet!");
+            System.out.println(Messages.MESSAGE_LIST_EMPTY);
         } else {
-            System.out.println("Here are the tasks in your list:");
+            System.out.println(Messages.MESSAGE_TASK_LIST_HEADER);
             for (int i = 0; i < taskList.size(); i++) {
                 int itemIdx = i + 1;
                 Task task = taskList.get(i);
@@ -117,7 +117,7 @@ public class UserInterface {
      * @return boolean to determine if Duke continues running
      */
     public boolean getUserCommand () {
-        out.println("What would you like me to do?");
+        printToUser(Messages.MESSAGE_INPUT_PROMPT);
         String userInput = in.nextLine();
         Parser parser = new Parser();
         try {

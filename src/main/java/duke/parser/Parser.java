@@ -167,6 +167,7 @@ public class Parser {
         UserInterface userInterface = new UserInterface();
         Storage storage = new Storage();
         TaskList taskList;
+        userInterface.printToUser(UserInterface.DIVIDER);
         try {
             taskList = new TaskList(storage.load("/tasks.txt"));
             final String[] split = userInput.trim().split("\\s+", 2);
@@ -202,10 +203,12 @@ public class Parser {
                 default:
                     throw new DukeInputException();
             }
+            userInterface.printToUser(UserInterface.DIVIDER);
             return false;
         } catch (DukeInitializeException e) {
             userInterface.printInitError();
         }
+
         return false;
     }
 
@@ -243,14 +246,13 @@ public class Parser {
      * @param commandArgs String containing the user's command argument to be parsed
      * @throws DukeInputException If the user gives an invalid integer
      */
-    public void processDeleteCommand (UserInterface userInterface, TaskList taskList, String commandArgs) throws DukeInputException {
+    public void processDeleteCommand (UserInterface userInterface, TaskList taskList, String commandArgs) {
         if (!commandArgs.isEmpty()) {
             try {
                 int itemNum = Integer.parseInt(commandArgs);
                 taskList.deleteTask(itemNum);
             } catch (NumberFormatException e) {
                 userInterface.printToUser(Messages.MESSAGE_INVALID_INTEGER);
-                throw new DukeInputException();
             }
         }
     }
@@ -308,14 +310,13 @@ public class Parser {
      * @param commandArgs String containing the user's command argument to be parsed
      * @throws DukeInputException If the user gives an invalid integer
      */
-    public void processDoneCommand (UserInterface userInterface, TaskList taskList, String commandArgs) throws DukeInputException {
+    public void processDoneCommand (UserInterface userInterface, TaskList taskList, String commandArgs) {
         if (!commandArgs.isEmpty()) {
             try {
                 int itemNum = Integer.parseInt(commandArgs);
                 taskList.setTaskStatus(itemNum, true);
             } catch (NumberFormatException e) {
                 userInterface.printToUser(Messages.MESSAGE_INVALID_INTEGER);
-                throw new DukeInputException();
             }
         }
     }
@@ -331,6 +332,7 @@ public class Parser {
     public void processListCommand (UserInterface userInterface, TaskList taskList, String commandArgs) throws DukeInputException {
         if (!commandArgs.isEmpty()) {
             try {
+                userInterface.printTaskList(taskList.tasksOnDate(LocalDate.parse(commandArgs)));
                 userInterface.printTaskList(taskList.tasksOnDate(LocalDate.parse(commandArgs)));
             } catch (DateTimeParseException e) {
                 userInterface.printToUser(Messages.MESSAGE_INVALID_DATE);
