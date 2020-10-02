@@ -10,8 +10,7 @@ public class Messages {
             + "| |_| | |_| |   <  __/\n"
             + "|____/ \\__,_|_|\\_\\___|\n";
     public static final String MESSAGE_WELCOME = "Welcome to your task assistant!";
-    public static final String MESSAGE_INIT_FAILED = "Failed to initalise Duke. Exiting...";
-    public static final String MESSAGE_SAVE_SUCCESSFUL = "Tasks saved successfully.";
+    public static final String MESSAGE_INIT_FAILED = "Failed to initialise Duke. Exiting...";
     public static final String MESSAGE_SAVE_FAILED = "Failed to save tasks. Some information may be lost.";
     public static final String MESSAGE_GOODBYE = "Bye! See you again soon :)";
     public static final String MESSAGE_ADD_TASK_SUCCESSFUL = "Added successfully: ";
@@ -23,4 +22,6 @@ public class Messages {
     public static final String MESSAGE_INVALID_DATE = "ERROR: Date input is invalid!";
     public static final String MESSAGE_INCOMPLETE_EVENT = "ERROR: Deadline by cannot be empty!";
     public static final String MESSAGE_INCOMPLETE_DEADLINE = "ERROR: Event at cannot be empty!";
+    public static final String MESSAGE_INCOMPLETE_KEYWORD = "ERROR: You need to give me a keyword to find!";
+    public static final String MESSAGE_INVALID_INTEGER = "ERROR: You need to give me a valid integer index!";
 }

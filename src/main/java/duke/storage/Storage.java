@@ -20,9 +20,9 @@ public class Storage {
      * Returns an ArrayList of tasks processed from Duke's storage.
      *
      * @param dataPath String containing data path of file to be loaded
-     * @return ArrayList containing Tasks from Duke's storage.
+     * @return ArrayList containing Tasks from Duke's storage
      * @throws DukeInitializeException If the data directory doesn't exist, or when the creation
-     *                                 of tasks.txt fails.
+     *                                 of tasks.txt fails
      */
     public ArrayList<Task> load (String dataPath) throws DukeInitializeException {
         final String filePath = DIRECTORY_PATH + dataPath;
@@ -44,7 +44,7 @@ public class Storage {
 
             return taskListDecoder.decodeTaskList(data);
         } else {
-            // Data directory does not exist. Initialize data directory.
+            // Data directory does not exist. Initialize data directory
             try {
                 createDataFile();
             } catch (IOException e) {
@@ -57,7 +57,7 @@ public class Storage {
     /**
      * Creates the .txt file to store tasks.
      *
-     * @throws IOException If the creation of the .txt file fails.
+     * @throws IOException If the creation of the .txt file fails
      */
     private void createDataFile () throws IOException {
         File file = new File(Storage.DIRECTORY_PATH);
@@ -71,8 +71,8 @@ public class Storage {
     /**
      * Saves the ArrayList of tasks in a String format into Duke's storage.
      *
-     * @param taskList ArrayList of tasks to be saved.
-     * @throws IOException If there is an error while writing to Duke's storage.
+     * @param taskList ArrayList of tasks to be saved
+     * @throws IOException If there is an error while writing to Duke's storage
      */
     public void save (ArrayList<Task> taskList, String dataPath) throws IOException {
         final String filePath = DIRECTORY_PATH + dataPath;

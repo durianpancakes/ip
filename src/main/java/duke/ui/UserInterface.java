@@ -19,14 +19,14 @@ public class UserInterface {
     private static PrintStream out = null;
 
     /**
-     * Default constructor for a UserInterface
+     * Default constructor for a UserInterface.
      */
     public UserInterface () {
         this(System.in, System.out);
     }
 
     /**
-     * Constructor for a UserInterface given an InputStream and PrintStream
+     * Constructor for a UserInterface given an InputStream and PrintStream.
      *
      * @param in InputStream
      * @param out PrintStream
@@ -37,7 +37,7 @@ public class UserInterface {
     }
 
     /**
-     * Displays a message upon successful adding of a Task into the taskList
+     * Displays a message upon successful adding of a Task into the taskList.
      *
      * @param task Task added
      * @param totalTasks Number of tasks in the taskList after the addition of the Task
@@ -46,7 +46,6 @@ public class UserInterface {
         TaskList taskList = new TaskList();
         boolean containsOneTask = totalTasks == 1;
 
-        out.println(DIVIDER);
         out.println(Messages.MESSAGE_ADD_TASK_SUCCESSFUL + task);
         if (containsOneTask) {
             out.println("You have " + totalTasks + " task in the list");
@@ -54,33 +53,29 @@ public class UserInterface {
             out.println("You have " + totalTasks + " tasks in the list");
         }
         taskList.list();
-        out.print(LINE_SEPARATOR);
-        out.println(DIVIDER);
     }
 
     /**
-     * Displays a message upon successful deletion of a Task from a taskList
+     * Displays a message upon successful deletion of a Task from a taskList.
      *
      * @param task       the Task that is deleted
      * @param totalTasks total number of tasks in the current taskList
      */
     public void printDeleteSuccessMsg (Task task, int totalTasks) {
         boolean containsOneTask = totalTasks == 1;
+        boolean emptyList = totalTasks == 0;
         TaskList taskList = new TaskList();
 
-        out.println(DIVIDER);
         out.println(Messages.MESSAGE_DELETE_TASK_SUCCESSFUL);
         out.println(task);
         if (containsOneTask) {
             System.out.println("You have " + totalTasks + " task in the list");
-        } else if (totalTasks == 0) {
+        } else if (emptyList) {
             System.out.println(Messages.MESSAGE_LIST_EMPTY);
         } else {
             System.out.println("You have " + totalTasks + " tasks in the list");
         }
         taskList.list();
-        out.print(LINE_SEPARATOR);
-        out.println(DIVIDER);
     }
 
     /**
@@ -89,7 +84,6 @@ public class UserInterface {
      * @param task the Task that is set
      */
     public void printSetTaskMsg (Task task) {
-        out.println(DIVIDER);
         if (task.getDone()) {
             System.out.println("Nice! I've marked this task as done:");
             System.out.println(task);
@@ -97,8 +91,6 @@ public class UserInterface {
             System.out.println("I've marked this task as not done:");
             System.out.println(task);
         }
-        out.print(LINE_SEPARATOR);
-        out.println(DIVIDER);
     }
 
     /**
@@ -107,7 +99,6 @@ public class UserInterface {
      * @param taskList ArrayList<Task> containing Tasks.
      */
     public void printTaskList (ArrayList<Task> taskList) {
-        printToUser(DIVIDER);
         if (taskList.isEmpty()) {
             System.out.println("You have not added any tasks yet!");
         } else {
@@ -118,14 +109,12 @@ public class UserInterface {
                 out.println(itemIdx + ". " + task);
             }
         }
-        printToUser(LINE_SEPARATOR);
-        printToUser(DIVIDER);
     }
 
     /**
      * Method to read user input from Scanner.
      *
-     * @return boolean to determine if Duke continues running.
+     * @return boolean to determine if Duke continues running
      */
     public boolean getUserCommand () {
         out.println("What would you like me to do?");
@@ -134,11 +123,8 @@ public class UserInterface {
         try {
             return parser.parseCommand(userInput);
         } catch (DukeInputException e) {
-            printToUser(DIVIDER);
             printToUser(Messages.MESSAGE_INVALID_INPUT);
             printHelpMessage();
-            printToUser(LINE_SEPARATOR);
-            printToUser(DIVIDER);
         }
         return false;
     }
@@ -168,7 +154,7 @@ public class UserInterface {
     }
 
     /**
-     * Displays a message to the user
+     * Displays a message to the user.
      *
      * @param string
      */
@@ -177,14 +163,7 @@ public class UserInterface {
     }
 
     /**
-     * Displays a message upon the successful saving of the taskList.
-     */
-    public void printSaveSuccess () {
-        printToUser(Messages.MESSAGE_SAVE_SUCCESSFUL);
-    }
-
-    /**
-     * Displays a farewell message upon exit of Duke
+     * Displays a farewell message upon exit of Duke.
      */
     public void printByeMessage () {
         printToUser(Messages.MESSAGE_GOODBYE);
@@ -196,43 +175,39 @@ public class UserInterface {
      * Displays an error message upon an invalid input while adding a Task.
      */
     public void printAddError () {
-        printToUser(DIVIDER);
         printToUser(Messages.MESSAGE_INCOMPLETE_INPUT);
-        printToUser(DIVIDER);
     }
 
     /**
      * Displays an error message upon the failure to save the taskList.
      */
     public void printSaveError () {
-        printToUser(DIVIDER);
         printToUser(Messages.MESSAGE_SAVE_FAILED);
-        printToUser(DIVIDER);
     }
 
     /**
-     * Displays an error message upon an invalid task index given
+     * Displays an error message upon an invalid task index given.
      */
     public void printIndexErrorMessage () {
         printToUser(Messages.MESSAGE_INVALID_INDEX);
     }
 
     /**
-     * Displays an error message upon an invalid data input given
+     * Displays an error message upon an invalid data input given.
      */
     public void printDateInputErrorMessage () {
         printToUser(Messages.MESSAGE_INVALID_DATE);
     }
 
     /**
-     * Displays an error message upon an incomplete Event given
+     * Displays an error message upon an incomplete Event given.
      */
     public void printIncompleteEventError () {
         printToUser(Messages.MESSAGE_INCOMPLETE_EVENT);
     }
 
     /**
-     * Displays an error message upon an incomplete Deadline given
+     * Displays an error message upon an incomplete Deadline given.
      */
     public void printIncompleteDeadlineError() {
         printToUser(Messages.MESSAGE_INCOMPLETE_DEADLINE);
@@ -242,8 +217,6 @@ public class UserInterface {
      * Displays an error message upon failed initialization.
      */
     public void printInitError () {
-        printToUser(DIVIDER);
         printToUser(Messages.MESSAGE_INIT_FAILED);
-        printToUser(DIVIDER);
     }
 }

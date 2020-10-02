@@ -7,7 +7,7 @@ import duke.ui.UserInterface;
 
 public class Duke {
     /**
-     * Driver function for Duke
+     * Driver function for Duke.
      *
      * @param args
      */

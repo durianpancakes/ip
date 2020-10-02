@@ -38,7 +38,6 @@ public class TaskList {
         UserInterface userInterface = new UserInterface();
         try {
             storage.save(taskList, "/tasks.txt");
-            userInterface.printSaveSuccess();
         } catch (IOException e) {
             userInterface.printSaveError();
         }

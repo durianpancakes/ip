@@ -1,5 +1,6 @@
 package duke.parser;
 
+import duke.common.Messages;
 import duke.data.exceptions.DukeInitializeException;
 import duke.data.exceptions.DukeInputException;
 import duke.data.task.*;
@@ -46,8 +47,8 @@ public class Parser {
         final String matchByPrefix = "/by";
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
-        String byString = commandArgs.substring(indexOfByPrefix).replace("/by", "").trim();
-        if (byString.equals("")) {
+        String byString = commandArgs.substring(indexOfByPrefix).replace(matchByPrefix, "").trim();
+        if (stringIsEmpty(byString)) {
             userInterface.printIncompleteDeadlineError();
             throw new DukeInputException();
         }
@@ -59,6 +60,16 @@ public class Parser {
             throw new DukeInputException();
         }
         return new Deadline(description, by);
+    }
+
+    /**
+     * Helper method to check if a string is empty
+     *
+     * @param string String to be checked
+     * @return boolean, TRUE if string is empty, FALSE if string is not empty
+     */
+    private boolean stringIsEmpty (String string) {
+        return string.equals("");
     }
 
     /**
@@ -74,7 +85,7 @@ public class Parser {
         final int indexOfByPrefix = commandArgs.indexOf(matchByPrefix);
         String description = commandArgs.substring(0, indexOfByPrefix).trim();
         String at = commandArgs.substring(indexOfByPrefix).replace(matchByPrefix, "").trim();
-        if (at.equals("")) {
+        if (stringIsEmpty(at)) {
             userInterface.printIncompleteEventError();
             throw new DukeInputException();
         }
@@ -165,69 +176,28 @@ public class Parser {
 
             switch (commandType) {
                 case "bye":
-                    taskList.save();
+                    processByeCommand(taskList);
                     return true;
                 case "list":
-                    if (!commandArgs.isEmpty()) {
-                        try {
-                            userInterface.printTaskList(taskList.tasksOnDate(LocalDate.parse(commandArgs)));
-                        } catch (DateTimeParseException e) {
-                            userInterface.printToUser("ERROR: Invalid date given!");
-                            throw new DukeInputException();
-                        }
-                    } else {
-                        taskList.list();
-                    }
+                    processListCommand(userInterface, taskList, commandArgs);
                     break;
                 case "done":
-                    if (!commandArgs.isEmpty()) {
-                        try {
-                            int itemNum = Integer.parseInt(commandArgs);
-                            taskList.setTaskStatus(itemNum, true);
-                        } catch (NumberFormatException e) {
-                            throw new DukeInputException();
-                        }
-                    }
+                    processDoneCommand(userInterface,taskList, commandArgs);
                     break;
                 case "todo":
-                    try {
-                        taskList.addTodo(commandArgs);
-                        return false;
-                    } catch (DukeInputException e) {
-                        userInterface.printAddError();
-                    }
+                    processTodoCommand(userInterface, taskList, commandArgs);
                     break;
                 case "event":
-                    try {
-                        taskList.addEvent(commandArgs);
-                    } catch (DukeInputException e) {
-                        userInterface.printAddError();
-                    }
+                    processEventCommand(userInterface, taskList, commandArgs);
                     break;
                 case "deadline":
-                    try {
-                        taskList.addDeadline(commandArgs);
-                    } catch (DukeInputException e) {
-                        userInterface.printAddError();
-                    }
+                    processDeadlineCommand(userInterface, taskList, commandArgs);
                     break;
                 case "delete":
-                    if (!commandArgs.isEmpty()) {
-                        try {
-                            int itemNum = Integer.parseInt(commandArgs);
-                            taskList.deleteTask(itemNum);
-                        } catch (NumberFormatException e) {
-                            throw new DukeInputException();
-                        }
-                    }
+                    processDeleteCommand(userInterface, taskList, commandArgs);
                     break;
                 case "find":
-                    if (!commandArgs.isEmpty()) {
-                        userInterface.printTaskList(taskList.findTasks(commandArgs));
-                    } else {
-                        userInterface.printToUser("ERROR: You need to give me a keyword to find!");
-                        throw new DukeInputException();
-                    }
+                    processFindCommand(userInterface, taskList, commandArgs);
                     break;
                 default:
                     throw new DukeInputException();
@@ -237,5 +207,137 @@ public class Parser {
             userInterface.printInitError();
         }
         return false;
+    }
+
+    /**
+     * Processes the Bye command issued by the user.
+     *
+     * @param taskList TaskList instance to be saved
+     */
+    public void processByeCommand (TaskList taskList) {
+        taskList.save();
+    }
+
+    /**
+     * Processes the Find command issued by the user.
+     *
+     * @param userInterface UserInterface instance passed from parseCommand
+     * @param taskList TaskList instance passed from parseCommand
+     * @param commandArgs String containing the user's command argument to be parsed
+     * @throws DukeInputException If the user gives an empty keyword
+     */
+    public void processFindCommand (UserInterface userInterface, TaskList taskList, String commandArgs) throws DukeInputException {
+        if (!commandArgs.isEmpty()) {
+            userInterface.printTaskList(taskList.findTasks(commandArgs));
+        } else {
+            userInterface.printToUser(Messages.MESSAGE_INCOMPLETE_KEYWORD);
+            throw new DukeInputException();
+        }
+    }
+
+    /**
+     * Processes the Delete command issued by the user.
+     *
+     * @param userInterface UserInterface instance passed from parseCommand
+     * @param taskList TaskList instance passed from parseCommand
+     * @param commandArgs String containing the user's command argument to be parsed
+     * @throws DukeInputException If the user gives an invalid integer
+     */
+    public void processDeleteCommand (UserInterface userInterface, TaskList taskList, String commandArgs) throws DukeInputException {
+        if (!commandArgs.isEmpty()) {
+            try {
+                int itemNum = Integer.parseInt(commandArgs);
+                taskList.deleteTask(itemNum);
+            } catch (NumberFormatException e) {
+                userInterface.printToUser(Messages.MESSAGE_INVALID_INTEGER);
+                throw new DukeInputException();
+            }
+        }
+    }
+
+    /**
+     * Processes the Deadline command issued by the user.
+     *
+     * @param userInterface UserInterface instance passed from parseCommand
+     * @param taskList TaskList instance passed from parseCommand
+     * @param commandArgs String containing the user's command argument to be parsed
+     */
+    public void processDeadlineCommand (UserInterface userInterface, TaskList taskList, String commandArgs) {
+        try {
+            taskList.addDeadline(commandArgs);
+        } catch (DukeInputException e) {
+            userInterface.printAddError();
+        }
+    }
+
+    /**
+     * Processes the Event command issued by the user.
+     *
+     * @param userInterface UserInterface instance passed from parseCommand
+     * @param taskList TaskList instance passed from parseCommand
+     * @param commandArgs String containing the user's command argument to be parsed
+     */
+    public void processEventCommand (UserInterface userInterface, TaskList taskList, String commandArgs) {
+        try {
+            taskList.addEvent(commandArgs);
+        } catch (DukeInputException e) {
+            userInterface.printAddError();
+        }
+    }
+
+    /**
+     * Processes the Todo command issued by the user.
+     *
+     * @param userInterface UserInterface instance passed from parseCommand
+     * @param taskList TaskList instance passed from parseCommand
+     * @param commandArgs String containing the user's command argument to be parsed
+     */
+    public void processTodoCommand (UserInterface userInterface, TaskList taskList, String commandArgs) {
+        try {
+            taskList.addTodo(commandArgs);
+        } catch (DukeInputException e) {
+            userInterface.printAddError();
+        }
+    }
+
+    /**
+     * Processes the Done command issued by the user.
+     *
+     * @param userInterface UserInterface instance passed from parseCommand
+     * @param taskList TaskList instance passed from parseCommand
+     * @param commandArgs String containing the user's command argument to be parsed
+     * @throws DukeInputException If the user gives an invalid integer
+     */
+    public void processDoneCommand (UserInterface userInterface, TaskList taskList, String commandArgs) throws DukeInputException {
+        if (!commandArgs.isEmpty()) {
+            try {
+                int itemNum = Integer.parseInt(commandArgs);
+                taskList.setTaskStatus(itemNum, true);
+            } catch (NumberFormatException e) {
+                userInterface.printToUser(Messages.MESSAGE_INVALID_INTEGER);
+                throw new DukeInputException();
+            }
+        }
+    }
+
+    /**
+     * Processes the List command issued by the user
+     *
+     * @param userInterface UserInterface instance passed from parseCommand
+     * @param taskList TaskList instance passed from parseCommand
+     * @param commandArgs String containing the user's command argument to be parsed
+     * @throws DukeInputException If the user gives an invalid date
+     */
+    public void processListCommand (UserInterface userInterface, TaskList taskList, String commandArgs) throws DukeInputException {
+        if (!commandArgs.isEmpty()) {
+            try {
+                userInterface.printTaskList(taskList.tasksOnDate(LocalDate.parse(commandArgs)));
+            } catch (DateTimeParseException e) {
+                userInterface.printToUser(Messages.MESSAGE_INVALID_DATE);
+                throw new DukeInputException();
+            }
+        } else {
+            taskList.list();
+        }
     }
 }
